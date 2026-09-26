@@ -1,0 +1,7 @@
+'use client';
+import Link from 'next/link';
+import { Icone } from './Icone';
+export type Tema = 'doce' | 'fliperama' | 'segredo';
+export function BarraSuperior({ tema, mudarTema, som, mudarSom, estrelas = 3, segredo = false }: { tema: Tema; mudarTema: (t: Tema) => void; som: boolean; mudarSom: () => void; estrelas?: number; segredo?: boolean }) {
+  return <header className="barra-superior"><Link className="marca" href="/" aria-label="InterativAI PLUS, início"><span className="marca-simbolo"><Icone nome="raio" tamanho={23} /></span><span>Interativ<span className="marca-ai">AI</span><b>PLUS</b></span></Link><nav aria-label="Você está aqui" className="trilha"><span>Ilha Elétrica</span><span aria-hidden="true">/</span><span>Comandos</span><span aria-hidden="true">/</span><strong>Fase 1</strong></nav><div className="preferencias"><div className="estrelas" aria-label={`${estrelas} de 3 estrelas`}>{[1,2,3].map(n=><span key={n} className={n <= estrelas ? 'acesa' : ''}><Icone nome="estrela" tamanho={24}/></span>)}</div><label className="seletor-tema"><span className="sr-only">Tema</span><select aria-label="Tema" value={tema} onChange={e=>mudarTema(e.target.value as Tema)}><option value="doce">Doce</option><option value="fliperama">Fliperama</option><option value="segredo" disabled={!segredo}>Segredo{segredo ? '' : ' · bloqueado'}</option></select></label><button className="botao-icone" onClick={mudarSom} aria-label={som ? 'Desligar som' : 'Ligar som'} aria-pressed={som}><Icone nome={som ? 'som' : 'mudo'}/></button></div></header>;
+}

@@ -1,0 +1,239 @@
+/*
+ * Tokens de tema do InterativAIPLUS.
+ *
+ * Este e o UNICO arquivo do jogo que pode conter cores literais.
+ * Todo o resto (componentes, SVGs, CodeMirror, arvore, mascote) usa
+ * var(--cor-...) ou as classes do Tailwind mapeadas em globals.css.
+ *
+ * O tema e escolhido por data-theme no <html>. Os seletores usam
+ * [data-theme="..."] sem amarrar ao <html> para que a rota /lab/mascote
+ * possa mostrar varios temas lado a lado.
+ */
+
+:root,
+[data-theme="doce"] {
+  color-scheme: light;
+
+  /* Base */
+  --cor-fundo: #fff3f8;
+  --cor-fundo-padrao: #fbe3f1;
+  --cor-superficie: #ffffff;
+  --cor-painel: #fbf1ff;
+  --cor-borda: #efc6e6;
+  --cor-texto: #3a1d4d;
+  --cor-texto-suave: #6e5382;
+
+  /* Marca */
+  --cor-primaria: #d6337f;
+  --cor-texto-sobre-primaria: #ffffff;
+  --cor-secundaria: #4f5fe8;
+  --cor-texto-sobre-secundaria: #ffffff;
+  --cor-destaque: #ffc233;
+  --cor-texto-sobre-destaque: #3a1d4d;
+
+  /* Estados */
+  --cor-sucesso: #13866c;
+  --cor-alerta: #ff8a3d;
+  --cor-erro: #d23a40;
+
+  /* Painel */
+  --cor-realce-inspecao: #5b8cff;
+  --cor-selecao: #ffdcee;
+  --cor-hover: #f6e4ff;
+  --cor-sombra: #d6337f2e;
+  --cor-veu: #2a0f3bb8;
+
+  /* Codigo */
+  --cor-codigo-fundo: #fffbfe;
+  --cor-codigo-linha-ativa: #fff0f8;
+  --cor-codigo-destaque-linha: #ffe7a3;
+  --cor-codigo-tag: #b8267a;
+  --cor-codigo-atributo: #a35a00;
+  --cor-codigo-valor: #2e5fd1;
+  --cor-codigo-texto: #3a1d4d;
+  --cor-codigo-comentario: #85739a;
+
+  /* Mascote */
+  --cor-mascote-moldura: #ff6fb0;
+  --cor-mascote-moldura-sombra: #d6337f;
+  --cor-mascote-tela: #fff8e7;
+  --cor-mascote-rosto: #3a1d4d;
+  --cor-mascote-bochecha: #ff9ecb;
+  --cor-mascote-base: #4f5fe8;
+
+  /* Mapa das ilhas */
+  --cor-mar: #bfe8f7;
+  --cor-mar-fundo: #93d3ee;
+  --cor-onda: #ffffff;
+  --cor-areia: #ffe4b8;
+  --cor-areia-sombra: #f0c98f;
+  --cor-grama: #a6e6b8;
+  --cor-grama-sombra: #72c790;
+  --cor-rota: #ffffff;
+  --cor-nevoa: #f6f0fb;
+  --cor-madeira: #b98458;
+  --cor-pedra: #f3ecf8;
+  --cor-pedra-sombra: #d9c9e6;
+  --cor-terminal-fundo: #1d3328;
+  --cor-terminal-texto: #7dffb0;
+
+  /* Modelo de caixa (aba Calculado e destaque na prévia), as cores clássicas do Chrome */
+  --cor-caixa-margem: #fbc79a;
+  --cor-caixa-borda: #fde39b;
+  --cor-caixa-preenchimento: #c6dd96;
+  --cor-caixa-conteudo: #9cc8e0;
+}
+
+[data-theme="fliperama"] {
+  color-scheme: dark;
+
+  --cor-fundo: #0b0a1c;
+  --cor-fundo-padrao: #1a1640;
+  --cor-superficie: #15132d;
+  --cor-painel: #1b1839;
+  --cor-borda: #3b327a;
+  --cor-texto: #f4eeff;
+  --cor-texto-suave: #b3a8e0;
+
+  --cor-primaria: #ff3dae;
+  --cor-texto-sobre-primaria: #140a1f;
+  --cor-secundaria: #22e4f0;
+  --cor-texto-sobre-secundaria: #0b0a1c;
+  --cor-destaque: #faf45a;
+  --cor-texto-sobre-destaque: #140a1f;
+
+  --cor-sucesso: #38f28b;
+  --cor-alerta: #ffb13d;
+  --cor-erro: #ff4f6d;
+
+  --cor-realce-inspecao: #22e4f0;
+  --cor-selecao: #342a6e;
+  --cor-hover: #251f4d;
+  --cor-sombra: #00000099;
+  --cor-veu: #000000c2;
+
+  --cor-codigo-fundo: #110f26;
+  --cor-codigo-linha-ativa: #1c1940;
+  --cor-codigo-destaque-linha: #4a3a12;
+  --cor-codigo-tag: #ff6ac1;
+  --cor-codigo-atributo: #5cff9d;
+  --cor-codigo-valor: #ffe96b;
+  --cor-codigo-texto: #f4eeff;
+  --cor-codigo-comentario: #8a80c6;
+
+  --cor-mascote-moldura: #ff3dae;
+  --cor-mascote-moldura-sombra: #a3136a;
+  --cor-mascote-tela: #0a0918;
+  --cor-mascote-rosto: #22e4f0;
+  --cor-mascote-bochecha: #ff3dae;
+  --cor-mascote-base: #6c4dff;
+
+  --cor-mar: #151242;
+  --cor-mar-fundo: #0d0b2c;
+  --cor-onda: #22e4f0;
+  --cor-areia: #3e3585;
+  --cor-areia-sombra: #2b245f;
+  --cor-grama: #1f6e5e;
+  --cor-grama-sombra: #154a40;
+  --cor-rota: #faf45a;
+  --cor-nevoa: #1a1640;
+  --cor-madeira: #9a7cff;
+  --cor-pedra: #2f2966;
+  --cor-pedra-sombra: #211c4c;
+  --cor-terminal-fundo: #05040f;
+  --cor-terminal-texto: #38f28b;
+
+  /* Modelo de caixa (aba Calculado e destaque na prévia), as cores clássicas do Chrome */
+  --cor-caixa-margem: #a95a1c;
+  --cor-caixa-borda: #9e8420;
+  --cor-caixa-preenchimento: #4f7d24;
+  --cor-caixa-conteudo: #236a94;
+}
+
+[data-theme="segredo"] {
+  color-scheme: dark;
+
+  --cor-fundo: #04140e;
+  --cor-fundo-padrao: #0a2a1e;
+  --cor-superficie: #082019;
+  --cor-painel: #0b2a20;
+  --cor-borda: #1e5a43;
+  --cor-texto: #d8ffe6;
+  --cor-texto-suave: #8cc7a5;
+
+  --cor-primaria: #3dff8f;
+  --cor-texto-sobre-primaria: #04140e;
+  --cor-secundaria: #ffc94d;
+  --cor-texto-sobre-secundaria: #04140e;
+  --cor-destaque: #ff7ad9;
+  --cor-texto-sobre-destaque: #04140e;
+
+  --cor-sucesso: #3dff8f;
+  --cor-alerta: #ffc94d;
+  --cor-erro: #ff6464;
+
+  --cor-realce-inspecao: #ff7ad9;
+  --cor-selecao: #13402f;
+  --cor-hover: #0f3326;
+  --cor-sombra: #00000099;
+  --cor-veu: #000000c2;
+
+  --cor-codigo-fundo: #061a13;
+  --cor-codigo-linha-ativa: #0b271d;
+  --cor-codigo-destaque-linha: #3d3a10;
+  --cor-codigo-tag: #3dff8f;
+  --cor-codigo-atributo: #ffc94d;
+  --cor-codigo-valor: #ff9be3;
+  --cor-codigo-texto: #d8ffe6;
+  --cor-codigo-comentario: #6baa89;
+
+  --cor-mascote-moldura: #ffc94d;
+  --cor-mascote-moldura-sombra: #b3861f;
+  --cor-mascote-tela: #02100a;
+  --cor-mascote-rosto: #3dff8f;
+  --cor-mascote-bochecha: #ff7ad9;
+  --cor-mascote-base: #1e5a43;
+
+  --cor-mar: #07302a;
+  --cor-mar-fundo: #042019;
+  --cor-onda: #3dff8f;
+  --cor-areia: #1f5c45;
+  --cor-areia-sombra: #174736;
+  --cor-grama: #2e8c61;
+  --cor-grama-sombra: #206847;
+  --cor-rota: #ffc94d;
+  --cor-nevoa: #0b2a20;
+  --cor-madeira: #b3861f;
+  --cor-pedra: #0f3a2b;
+  --cor-pedra-sombra: #0a2a1f;
+  --cor-terminal-fundo: #010a06;
+  --cor-terminal-texto: #3dff8f;
+
+  /* Modelo de caixa (aba Calculado e destaque na prévia), as cores clássicas do Chrome */
+  --cor-caixa-margem: #9a5a26;
+  --cor-caixa-borda: #98812a;
+  --cor-caixa-preenchimento: #447238;
+  --cor-caixa-conteudo: #27637e;
+}
+
+/* Identificação elétrica e instalação: estáveis em todos os temas. */
+:root {
+  --cor-fase: #cc3f4c;
+  --cor-neutro: #2563b8;
+  --cor-terra-verde: #238143;
+  --cor-terra-amarelo: #edd148;
+  --cor-energizado: #db710e;
+  --cor-desenergizado: #82909d;
+  --inst-fundo: #fcf2df;
+  --inst-tinta: #583d35;
+  --inst-superficie: #fffdf6;
+  --inst-parede: #eddfc5;
+  --inst-metal: #bcc8cd;
+  --inst-metal-escuro: #61727d;
+  --inst-pao: #e9af65;
+  --inst-pao-claro: #ffe0a0;
+  --inst-verde: #39815b;
+  --inst-vermelho: #bd4650;
+  --inst-luz: #ffd764;
+  --inst-sombra: #422d3b20;
+}
