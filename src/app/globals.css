@@ -64,3 +64,9 @@ h1 span { color: var(--cor-primaria); }
 @media(max-width: 1023px) { .trilha { display: none; } .area-jogo { grid-template-columns: 1fr; } .selo-fase { display: none; } .jogo { padding: 22px 4%; } }
 @media(max-width: 540px) { .barra-superior { padding: 10px 4%; gap: 10px; min-height: 72px; } .marca { font-size: 1.05rem; gap: 7px; } .marca-simbolo { width: 30px; height: 34px; } .marca b { display: none; } .preferencias { gap: 7px; } .estrelas { gap: 1px; } .estrelas svg { width: 18px; } .seletor-tema select { max-width: 79px; } .faixa-mascote { padding: 13px; gap: 12px; } .titulo-painel span { display: none; } }
 @media(prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
+.laboratorio { padding: 30px; }
+.laboratorio section { margin-top: 24px; padding: 25px; border-radius: 24px; color: var(--cor-texto); background: var(--cor-fundo); border: 1px solid var(--cor-borda); }
+.laboratorio h2 { text-transform: capitalize; font-weight: 900; font-size: 1.4rem; }
+.grade-expressoes { display: flex; flex-wrap: wrap; gap: 20px; }
+.grade-expressoes figure { margin: 15px; text-align: center; }
+.carinhas-lab { display: flex; gap: 15px; }
