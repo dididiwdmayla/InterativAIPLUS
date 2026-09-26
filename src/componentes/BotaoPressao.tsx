@@ -1,0 +1,5 @@
+'use client';
+import type { AcaoBancada } from '@/eletrica/tipos';
+export function BotaoPressao({ id, tag, nome, pressionada, atuar }: { id:string;tag:string;nome:string;pressionada:boolean;atuar:(acao:AcaoBancada)=>void }) {
+  return <button className={`botoeira ${id==='s1'?'liga':'desliga'} ${pressionada?'pressionada':''}`} aria-label={`${tag} ${nome}: mantenha pressionada`} aria-pressed={pressionada} onPointerDown={e=>{e.currentTarget.setPointerCapture(e.pointerId);atuar({tipo:'pressionar',id});}} onPointerUp={()=>atuar({tipo:'soltar',id})} onPointerCancel={()=>atuar({tipo:'soltar',id})} onLostPointerCapture={()=>atuar({tipo:'soltar',id})} onBlur={()=>atuar({tipo:'soltar',id})} onKeyDown={e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat){e.preventDefault();atuar({tipo:'pressionar',id});}}} onKeyUp={e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();atuar({tipo:'soltar',id});}}}><span className="cabeca-botoeira"/><span><b>{tag}</b> {nome}</span><small>Segure para acionar</small></button>;
+}

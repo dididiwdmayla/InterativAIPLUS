@@ -2,7 +2,7 @@
 
 - [x] 1. Fundação, temas, fontes, layout, documentação.
 - [x] 2. Mascote, Carinha, expressões e laboratório.
-- [ ] 3. Modelo lógico e bancada SVG.
+- [x] 3. Modelo lógico e bancada SVG.
 - [ ] 4. Diagrama interativo e acessibilidade de edição.
 - [ ] 5. Motor de fases, conteúdo, ajuda e persistência.
 - [ ] 6. Tutor Gemini e recuperação de falhas.
@@ -15,3 +15,5 @@
 Etapa 1: Next.js 16.3.6, fontes locais, tokens Doce/Fliperama/Segredo e instalação fixa, barra/trilha/abas/inspetor/bancada e documentos. Build e lint verificados antes do commit.
 
 Etapa 2: personagem original preservado em cópia independente, sete expressões, Carinhas nas abas bloqueadas e /lab/mascote com os três temas. Piscar 3–6s, respiração e preferência de movimento reduzido.
+
+Etapa 3: núcleo sem React com conectividade, cargas, realimentação, curto, proteção e sonda diferencial. Bancada SVG com esteira, motor, contatora, lâmpada e botoeiras. Dez testes do comportamento elétrico passaram.
