@@ -8,7 +8,7 @@ export function circuitoInicial(): Circuito { return {
     {id:'f1',tag:'F1',tipo:'termico',nome:'Relé térmico',contato:'NF',x:230,y:95,terminais:[{nome:'95',x:205,y:95},{nome:'96',x:255,y:95}]},
     {id:'s2',tag:'S2',tipo:'botoeira',nome:'Desliga',contato:'NF',x:345,y:95,terminais:[{nome:'1',x:320,y:95},{nome:'2',x:370,y:95}]},
     {id:'s1',tag:'S1',tipo:'botoeira',nome:'Liga',contato:'NA',x:535,y:95,terminais:[{nome:'1',x:510,y:95},{nome:'2',x:560,y:95}]},
-    {id:'q1',tag:'Q1',tipo:'contatora',nome:'Contatora',contato:'NA',x:650,y:190,terminais:[{nome:'A1',x:650,y:145},{nome:'A2',x:650,y:235},{nome:'13',x:500,y:200},{nome:'14',x:570,y:200}]},
+    {id:'q1',tag:'Q1',tipo:'contatora',nome:'Contatora',contato:'NA',x:650,y:190,terminais:[{nome:'A1',x:650,y:145},{nome:'A2',x:650,y:235},{nome:'13',x:500,y:225},{nome:'14',x:570,y:225}]},
     {id:'h1',tag:'H1',tipo:'lampada',nome:'Sinalização de comando',x:535,y:285,terminais:[{nome:'1',x:505,y:285},{nome:'2',x:565,y:285}]},
     {id:'m1',tag:'M1',tipo:'motor',nome:'Motor trifásico da esteira',x:0,y:0,terminais:[]},
   ],
