@@ -1,2 +1,2 @@
-import { Fundacao } from '@/componentes/Fundacao';
-export default function Pagina() { return <Fundacao/>; }
+import { Jogo } from '@/componentes/Jogo';
+export default function Pagina() { return <Jogo/>; }

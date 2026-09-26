@@ -24,6 +24,7 @@ export function reduzirEditor(s:EstadoEditor,a:AcaoEditor):EstadoEditor{
   }
   if(a.tipo==='atuar'){
     n={...s,simulacao:atuar(s.circuito,s.simulacao,a.acao)};
+    if(a.acao.tipo==='emergencia')evento={tipo:'pressionouBotoeira',alvo:'s3',pressionada:true,motor:n.simulacao.motor};
     if(a.acao.tipo==='pressionar'||a.acao.tipo==='soltar')evento={tipo:'pressionouBotoeira',alvo:a.acao.id,pressionada:a.acao.tipo==='pressionar',motor:n.simulacao.motor};
   }
   return evento?{...n,eventos:[...s.eventos.slice(-99),evento]}:n;
