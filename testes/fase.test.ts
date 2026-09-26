@@ -27,3 +27,13 @@ describe('Fase e persistência',()=>{
   });
   it('dados inválidos e esquema anterior têm fallback',()=>{expect(desserializar('{oops').objetivo).toBe(0);expect(desserializar('{"versao":999}').tema).toBe('doce');const s=desserializar('{"versao":1,"objetivo":100,"estrelas":-2,"tema":"segredo","segredo":false}');expect(s.objetivo).toBe(0);expect(s.estrelas).toBe(3);expect(s.tema).toBe('doce');});
 });
+
+it('desfazer a ligação do curto preserva a necessidade de rearmar Q0',()=>{
+  let s={...jogoInicial(),objetivo:3,momento:'objetivo' as const};
+  s=reduzirJogo(FASE_1,s,{tipo:'editor',acao:{tipo:'editar',edicao:{tipo:'conectar',de:'q0:2',para:'fonte:0'}}}) as typeof s;
+  expect(s.editor.simulacao.disjuntorDisparado).toBe(true);
+  s=reduzirJogo(FASE_1,s,{tipo:'editor',acao:{tipo:'desfazer'}}) as typeof s;
+  expect(s.editor.simulacao.disjuntorDisparado).toBe(true);expect(s.editor.simulacao.entradas.disjuntorLigado).toBe(false);
+  s=reduzirJogo(FASE_1,s,{tipo:'editor',acao:{tipo:'atuar',acao:{tipo:'disjuntor'}}}) as typeof s;
+  expect(s.editor.simulacao.disjuntorDisparado).toBe(false);
+});

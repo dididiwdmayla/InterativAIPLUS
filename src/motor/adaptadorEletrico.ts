@@ -38,7 +38,7 @@ export function validar(regra: RegraObjetivo,e: EstadoEditor): boolean {
   if(regra==='sondar-bobina')return e.eventos.some(v=>v.tipo==='sondou'&&v.alvo==='q1:A1'&&v.valor!==null);
   if(regra==='observar-defeito')return soltouComMotor(e,false);
   if(regra==='montar-selo')return seloFunciona(e.circuito)&&soltouComMotor(e,true)&&e.simulacao.motor;
-  return paradaFunciona(e.circuito)&&e.eventos.some(v=>v.tipo==='pressionouBotoeira'&&v.alvo==='s3'&&v.pressionada&&!v.motor);
+  return paradaFunciona(e.circuito)&&e.eventos.some(v=>v.tipo==='pressionouBotoeira'&&v.alvo==='s3'&&v.pressionada&&v.motorAntes&&!v.motor);
 }
 export function resolver(regra: RegraObjetivo,e: EstadoEditor): EstadoEditor {
   if(regra==='selecionar-contatora')return reduzirEditor(e,{tipo:'selecionar',id:'q1'});

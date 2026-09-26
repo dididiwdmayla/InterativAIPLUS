@@ -25,7 +25,7 @@ export function lerEntrada(v: unknown): EntradaTutor | null {
 }
 function textoCurto(texto: string): string {
   const limpo = texto.replace(/[\p{Extended_Pictographic}\p{Regional_Indicator}\u200d\ufe0f\u20e3]/gu, '').replace(/[*#`]/g, '').trim();
-  return (limpo.match(/[^.!?]+[.!?]*(?:\s|$)/g)?.slice(0, 3).join('').trim() || limpo).slice(0, 700);
+  return [...new Intl.Segmenter('pt-BR', { granularity: 'sentence' }).segment(limpo)].slice(0, 3).map(s => s.segment).join('').trim().slice(0, 700);
 }
 export function lerResposta(texto: string | undefined): Fala {
   if (!texto?.trim()) return SEM_SINAL;

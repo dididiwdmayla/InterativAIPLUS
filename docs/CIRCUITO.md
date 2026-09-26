@@ -33,3 +33,5 @@ Entrada do simulador: montagem e estado anterior mais ação. Saída: novo estad
 Operações de edição: conectar, desconectar, mudarTag, mudarContato e inserirEmConexao. Inserir substitui o fio em uma única transação. Edições possuem desfazer; saídas elétricas são recalculadas. Estados incoerentes devem produzir diagnóstico legível.
 
 Sonda: referência A2 visível; 24 V, 0 V ou indeterminado. Valor é diferença entre nós, não uma propriedade absoluta do terminal. Terra de proteção não substitui retorno 0 V nem neutro.
+
+U1 identifica a fonte de 24 Vcc. Q0 aberto mantém tensão no lado de entrada; a carga deixa de receber alimentação. Num curto diretamente na fonte, a simulação bloqueia sua saída, além de registrar a proteção disparada. Isso é um limite explícito do modelo didático, sem cálculo de impedância da fonte. Desfazer uma montagem não rearma proteções.

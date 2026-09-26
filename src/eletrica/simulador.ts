@@ -16,9 +16,11 @@ function analisar(circuito: Circuito, entradas: Entradas, bobina: boolean) {
     if(c.tipo==='contatora' && (c.contato==='NA' ? bobina : !bobina)) unir(pino(c.id,'13'),pino(c.id,'14'));
   }
   const positivo=raiz('fonte:+'), negativo=raiz('fonte:0');
-  const curto=entradas.disjuntorLigado && positivo===negativo;
+  const curto=positivo===negativo;
   const valores=new Map<string,number>();
-  valores.set(positivo,entradas.disjuntorLigado ? circuito.tensao : 0);
+  // Antes de Q0, a fonte mantém tensão mesmo com o disjuntor aberto.
+  // Um curto direto na fonte bloqueia sua saída no modelo didático.
+  valores.set(positivo,curto ? 0 : circuito.tensao);
   valores.set(negativo,0);
   const cargas: [string,string][] = circuito.componentes.flatMap(c=>c.tipo==='contatora' ? [[raiz(pino(c.id,'A1')),raiz(pino(c.id,'A2'))] as [string,string]] : c.tipo==='lampada' ? [[raiz(pino(c.id,'1')),raiz(pino(c.id,'2'))] as [string,string]] : []);
   // Nós sem alimentação, ligados através de uma carga a um único potencial,

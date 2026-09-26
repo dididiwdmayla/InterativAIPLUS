@@ -1,13 +1,13 @@
 import assert from 'node:assert/strict';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import { abrirNavegador } from './navegador.mjs';
 const {browser,url,fechar}=await abrirNavegador();
 await mkdir('test-results',{recursive:true});
 try{
   for(const largura of process.env.TEST_WIDTH?[Number(process.env.TEST_WIDTH)]:[1440,390]){
     const contexto=await browser.newContext({viewport:{width:largura,height:1000},hasTouch:largura<500});
-    const p=await contexto.newPage(),erros=[];p.on('pageerror',e=>erros.push(e.message));
-    await p.goto(url);
+    const p=await contexto.newPage(),erros=[];p.on('pageerror',e=>erros.push(e.message));p.on('console',m=>{if(m.type()==='error')erros.push(m.text());});
+    await p.goto(url);await p.getByRole('button',{name:'Recomeçar fase',exact:true}).waitFor();await p.evaluate(()=>localStorage.clear());await p.reload();
     await p.getByRole('button',{name:'Continuar',exact:true}).click();await p.getByRole('button',{name:'Continuar',exact:true}).click();await p.getByRole('button',{name:'Vamos começar',exact:true}).click();
     await p.locator('[data-componente="q1"]').click();await p.getByRole('button',{name:'Próximo objetivo',exact:true}).click();
     await p.getByRole('button',{name:'Sonda',exact:true}).click();await p.getByRole('button',{name:'Sondar A1',exact:true}).click();await p.getByRole('button',{name:'Próximo objetivo',exact:true}).click();
@@ -31,8 +31,9 @@ try{
     await p.getByRole('checkbox',{name:'Identifiquei em uma foto ou diagrama real'}).check();
     await p.getByLabel('Tema',{exact:true}).selectOption('fliperama');await p.reload();await p.getByRole('heading',{name:'Essa fornada é sua!'}).waitFor();
     assert.equal(await p.getByRole('checkbox').isChecked(),true);assert.equal(await p.locator('html').getAttribute('data-theme'),'fliperama');assert.equal(await p.locator('.lista-objetivos .feito').count(),5);
-    await p.screenshot({path:`test-results/conclusao-${largura}.png`,fullPage:true});
+    await writeFile(`test-results/progresso-${largura}.json`,await p.evaluate(()=>localStorage.getItem('interativai:progresso:v1')));
     assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+    await p.waitForFunction(()=>Array.from(document.querySelectorAll('.estrelas-conclusao span')).every(e=>getComputedStyle(e).opacity==='1'));
     await p.screenshot({path:`test-results/conclusao-${largura}.png`,fullPage:true});assert.deepEqual(erros,[]);console.log(`Jornada ${largura}: cinco objetivos, arraste/teclado, retomada, tema e missão passaram.`);
     await p.close();
   }

@@ -36,7 +36,7 @@ Tutor: POST /api/tutor; entrada faseId, objetivoId, enunciado, degrauAtual, circ
 
 ## Visual e experiência
 
-Doce: pastéis, rosa e violeta; Fliperama: neon; Segredo desbloqueável. Bancada da padaria tem paleta fixa. Cores de condutores não mudam com energização: um realce separado mostra o estado. Símbolos e rótulos também comunicam, sem depender só de cor.
+Doce: pastéis, rosa e violeta; Fliperama: neon; Segredo desbloqueável. Bancada da padaria tem paleta fixa. No diagrama lógico de 24 Vcc, laranja/cinza indicam potencial; a legenda explicita esse estado, sem representar cor física de isolamento. Tokens de fase, neutro e terra ficam preparados para os próximos domínios. Símbolos e rótulos também comunicam, sem depender só de cor.
 
 Desktop: trilha/estrelas, diagrama e inspetor à esquerda, bancada à direita, mascote/ajuda/tutor abaixo. No móvel, Painel e Bancada alternáveis mantendo estado. Todos os gestos têm alternativa por teclado. Sem mapa completo nem segunda ilha nesta entrega.
 

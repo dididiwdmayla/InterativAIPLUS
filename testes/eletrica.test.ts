@@ -13,3 +13,8 @@ describe('Circuito lógico real',()=>{
   it('detecta realimentação oscilante sem travar',()=>{const c=editar(adicionarSelo(circuitoInicial()),{tipo:'contato',id:'q1',contato:'NF'});const s=simular(c);expect(s.oscilacao).toBe(true);expect(s.motor).toBe(false);});
   it('trocar a tag não altera a identidade elétrica',()=>{const c=editar(adicionarSelo(circuitoInicial()),{tipo:'tag',id:'q1',tag:'K1'});let s=atuar(c,simular(c),{tipo:'pressionar',id:'s1'});s=atuar(c,s,{tipo:'soltar',id:'s1'});expect(s.motor).toBe(true);});
 });
+
+it('abrir Q0 mantém tensão no lado da fonte e desliga a carga',()=>{
+  const c=circuitoInicial();const s=atuar(c,simular(c),{tipo:'disjuntor'});
+  expect(s.potenciais['q0:1']).toBe(24);expect(s.motor).toBe(false);expect(s.bobina).toBe(false);
+});

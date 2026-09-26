@@ -7,12 +7,13 @@ import type { EstadoJogo } from '@/motor/jogo';
 import type { Fala } from '@/motor/tipos';
 import { SEM_SINAL, type EntradaTutor, type Mensagem } from '@/tutor/contrato';
 import { Icone } from './Icone';
-export function CampoTutor({ estado, falar }: { estado: EstadoJogo; falar: (fala: Fala) => void }) {
+export function CampoTutor({ estado, falar, descobrir }: { estado: EstadoJogo; falar: (fala: Fala) => void; descobrir: () => void }) {
   const [pergunta, setPergunta] = useState(''), [esperando, setEsperando] = useState(false), [historico, setHistorico] = useState<Mensagem[]>([]);
   const requisicao = useRef<AbortController | null>(null);
   useEffect(() => () => requisicao.current?.abort(), []);
   async function enviar(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault(); const texto = pergunta.trim(); if (!texto || esperando) return;
+    if (texto.toLocaleLowerCase('pt-BR') === 'curioso') { setPergunta(''); descobrir(); return; }
     const controller = new AbortController(); requisicao.current = controller;
     const prazo = setTimeout(() => controller.abort('tempo'), 22000);
     const objetivo = FASE_1.objetivos[estado.objetivo];

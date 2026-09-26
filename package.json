@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "test": "vitest run",
-    "test:e2e": "node testes/jornada.mjs"
+    "test:e2e": "node testes/jornada.mjs && node testes/tutor.mjs && node testes/acabamento.mjs",
+    "check:regras": "node testes/regras.mjs"
   },
   "dependencies": {
     "@codemirror/state": "^6.7.0",

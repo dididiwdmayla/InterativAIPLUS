@@ -3,7 +3,7 @@ export const S3: Componente = { id: 's3', tag: 'S3', tipo: 'botoeira', nome: 'Pa
 export function circuitoInicial(): Circuito { return {
   versao: 1, tensao: 24,
   componentes: [
-    {id:'fonte',tag:'24 Vcc',tipo:'fonte',nome:'Alimentação de comando',x:35,y:95,terminais:[{nome:'+',x:35,y:95},{nome:'0',x:35,y:335}]},
+    {id:'fonte',tag:'U1',tipo:'fonte',nome:'Alimentação de comando',x:35,y:95,terminais:[{nome:'+',x:35,y:95},{nome:'0',x:35,y:335}]},
     {id:'q0',tag:'Q0',tipo:'disjuntor',nome:'Disjuntor geral',x:120,y:95,terminais:[{nome:'1',x:95,y:95},{nome:'2',x:145,y:95}]},
     {id:'f1',tag:'F1',tipo:'termico',nome:'Relé térmico',contato:'NF',x:230,y:95,terminais:[{nome:'95',x:205,y:95},{nome:'96',x:255,y:95}]},
     {id:'s2',tag:'S2',tipo:'botoeira',nome:'Desliga',contato:'NF',x:345,y:95,terminais:[{nome:'1',x:320,y:95},{nome:'2',x:370,y:95}]},

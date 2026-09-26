@@ -21,5 +21,6 @@ describe('Contrato do tutor', () => {
   it('não mostra JSON truncado nem resposta vazia e limita três frases', () => {
     expect(lerResposta('{"texto":')).toEqual(SEM_SINAL); expect(lerResposta('')).toEqual(SEM_SINAL);
     expect(lerResposta('Um. Dois! Três? Quatro.').texto).toBe('Um. Dois! Três?');
+    expect(lerResposta('Compare Q1.A1 com Q1.A2.').texto).toBe('Compare Q1.A1 com Q1.A2.');
   });
 });
