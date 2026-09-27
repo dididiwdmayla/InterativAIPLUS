@@ -1,9 +1,10 @@
-import type { Movimento, Projeto, Transmissao } from './tipos';
+import type { Ligacao, Movimento, Projeto, Transmissao } from './tipos';
 export function calcularTransmissao(p: Projeto): Transmissao {
   const motor = p.pecas.find(c => c.tipo === 'motor'), rolete = p.pecas.find(c => c.tipo === 'rolete');
   const razoes: Record<string, number> = motor ? { [motor.id]: 1 } : {};
   const eficiencias: Record<string, number> = motor ? { [motor.id]: 1 } : {};
-  let invalida = false, limite = Infinity;
+  let invalida = false, limite = Infinity, pontoDeslizamento = '';
+  const anteriores: Record<string,{id:string;ligacao:Ligacao}> = {};
   const fila = motor ? [motor.id] : [];
   while (fila.length) {
     const id = fila.shift()!;
@@ -15,19 +16,32 @@ export function calcularTransmissao(p: Projeto): Transmissao {
       if (l.tipo === 'engrenamento' || l.tipo === 'cruzada') r *= -1;
       const outro = aId === id ? bId : aId, rr = razoes[id] * (aId === id ? r : 1 / r);
       if (razoes[outro] !== undefined) { if (Math.abs(razoes[outro] - rr) > .001) invalida = true; }
-      else { razoes[outro] = rr; eficiencias[outro] = eficiencias[id] * (l.tipo === 'eixo' ? 1 : .96); fila.push(outro); }
+      else { anteriores[outro] = {id,ligacao:l}; razoes[outro] = rr; eficiencias[outro] = eficiencias[id] * (l.tipo === 'eixo' ? 1 : .96); fila.push(outro); }
     }
   }
   const razao = rolete ? razoes[rolete.id] ?? 0 : 0, raio = (rolete?.valor ?? 160) / 2000;
   // Capacidade das correias convertida para o eixo de saída; escala didática, não especificação de fabricante.
-  if (razao) for (const l of p.ligacoes) if (l.tipo === 'correia' || l.tipo === 'cruzada') {
-    const rp = razoes[l.de.split(':')[0]]; if (rp !== undefined) limite = Math.min(limite, 4 * l.tensao / 100 * Math.abs(rp / razao));
+  let cursor = rolete?.id ?? '';
+  while (razao && anteriores[cursor]) {
+    const anterior = anteriores[cursor], l = anterior.ligacao;
+    if (l.tipo === 'correia' || l.tipo === 'cruzada') {
+      const capacidade = 4 * l.tensao / 100 * Math.abs(razoes[anterior.id] / razao);
+      if (capacidade < limite) { limite = capacidade; pontoDeslizamento = cursor; }
+    }
+    cursor = anterior.id;
   }
   const torque = razao ? 2 / Math.abs(razao) * (eficiencias[rolete!.id] ?? 1) : 0;
   const resistente = (.7 + p.carga * .045) * raio;
   const escorrega = limite < Math.min(torque, resistente * 3);
   const conectada = !!motor && !!rolete && !!razao && !invalida;
-  return { razoes, razao, rpm: conectada ? motor.valor * razao : 0, rpmEntrada: motor?.valor ?? 0, torque, capacidade: limite, escorrega, invalida, conectada, raio,
+  const eixosEntrada = Object.keys(razoes).filter(id => {
+    if (!conectada) return !invalida;
+    if (!escorrega) return false;
+    let atual = id;
+    while (anteriores[atual] && atual !== pontoDeslizamento) atual = anteriores[atual].id;
+    return atual !== pontoDeslizamento;
+  });
+  return { razoes, eixosEntrada, razao, rpm: conectada ? motor.valor * razao : 0, rpmEntrada: motor?.valor ?? 0, torque, capacidade: limite, escorrega, invalida, conectada, raio,
     mensagem: invalida ? 'As ligações exigem rotações incompatíveis. Revise o ciclo da transmissão.' : !conectada ? 'Ligue o motor ao rolete por eixos, engrenagens ou polias.' : escorrega ? 'A correia não consegue transmitir o esforço. Observe o motor girar e a saída perder velocidade.' : razao < 0 ? 'A saída gira ao contrário da entrada. Conte os elementos que invertem o sentido.' : 'Movimento transmitido. A carga e a inércia determinam como a esteira ganha velocidade.' };
 }
 export function movimentoInicial(): Movimento { return { omega: 0, angulo: 0, omegaEntrada: 0, anguloEntrada: 0, distancia: 0, caixas: [{ x: .1, v: 0 }, { x: 1.1, v: 0 }, { x: 2.1, v: 0 }], entregas: 0 }; }
@@ -37,7 +51,7 @@ export function integrar(m: Movimento, t: Transmissao, carga: number, ligada: bo
   let resto = Math.min(.1, Math.max(0, segundos));
   while (resto > .000001) {
     const dt = Math.min(resto, 1 / 120); resto -= dt;
-    const alvoEntrada = ligada ? t.rpmEntrada * Math.PI / 30 : 0;
+    const alvoEntrada = ligada && !t.invalida ? t.rpmEntrada * Math.PI / 30 : 0;
     omegaEntrada += Math.sign(alvoEntrada - omegaEntrada) * Math.min(Math.abs(alvoEntrada - omegaEntrada), (ligada ? 18 : 7) * dt);
     anguloEntrada += omegaEntrada * dt;
     const livre = Math.abs(t.rpm) * Math.PI / 30, sinal = Math.sign(t.rpm);
@@ -47,6 +61,7 @@ export function integrar(m: Movimento, t: Transmissao, carga: number, ligada: bo
     const forca = Math.abs(omega) < .001 && Math.abs(acionamento) <= atrito ? 0 : acionamento - direcao * atrito - .006 * omega;
     const nova = omega + forca / inercia * dt;
     omega = !acionamento && nova * omega < 0 ? 0 : nova;
+    if (!ligada && Math.abs(omega) < .001) omega = 0;
     angulo += omega * dt; const v = omega * t.raio; distancia += v * dt;
     for (const c of caixas) {
       const delta = v - c.v, dv = Math.sign(delta) * Math.min(Math.abs(delta), 1.8 * dt);
@@ -55,4 +70,10 @@ export function integrar(m: Movimento, t: Transmissao, carga: number, ligada: bo
     }
   }
   return { omega, angulo, omegaEntrada, anguloEntrada, distancia, caixas, entregas };
+}
+
+export function medirRotacao(t: Transmissao, m: Movimento, id: string): number {
+  if (t.invalida || t.razoes[id] === undefined) return 0;
+  const omega = t.eixosEntrada.includes(id) ? m.omegaEntrada * t.razoes[id] : t.razao ? m.omega * t.razoes[id] / t.razao : 0;
+  return omega * 30 / Math.PI;
 }

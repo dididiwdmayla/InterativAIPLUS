@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 import { ORDENS } from '../src/oficina/modelo/ordens';
 import { calcularEletrica } from '../src/oficina/modelo/eletrica';
-import { calcularTransmissao, integrar, movimentoInicial } from '../src/oficina/modelo/mecanica';
+import { calcularTransmissao, integrar, movimentoInicial, medirRotacao } from '../src/oficina/modelo/mecanica';
 import { lerProjeto, conectar } from '../src/oficina/modelo/operacoes';
 import { ENTRADAS } from '../src/oficina/modelo/tipos';
 const projeto = (id:string) => structuredClone(ORDENS.find(o=>o.id===id)!.projeto);
@@ -30,7 +30,8 @@ it('engrenagens respeitam razão, inversão e rejeitam um ciclo impossível',()=
 });
 it('correia cruzada inverte a saída e tensão insuficiente limita a tração',()=>{
  const p=projeto('retorno');expect(calcularTransmissao(p).rpm).toBe(-60);p.ligacoes[1].tipo='correia';expect(calcularTransmissao(p).rpm).toBe(60);
- expect(calcularTransmissao(projeto('carga')).escorrega).toBe(true);
+ const solta=calcularTransmissao(projeto('carga'));expect(solta.escorrega).toBe(true);
+ let m=movimentoInicial();for(let i=0;i<100;i++)m=integrar(m,solta,25,true,.02);expect(medirRotacao(solta,m,'p1')).toBeGreaterThan(100);expect(medirRotacao(solta,m,'p2')).toBeCloseTo(0);
  p.ligacoes[1].tensao=70;expect(calcularTransmissao(p).escorrega).toBe(false);
 });
 it('esteira acelera, transporta caixas e desacelera sem teletransportar após desligar',()=>{

@@ -3,7 +3,7 @@ import type { Circuito, Simulacao } from '@/eletrica/tipos';
 import { useReducedMotion } from 'framer-motion';
 import { useMovimento } from '@/oficina/useMovimento';
 import type { Transmissao } from '@/oficina/modelo/tipos';
-const TRANSMISSAO: Transmissao = { razoes:{},razao:1,rpm:50,rpmEntrada:50,torque:2,capacidade:2,escorrega:false,invalida:false,conectada:true,raio:.08,mensagem:'' };
+const TRANSMISSAO: Transmissao = { razoes:{},eixosEntrada:[],razao:1,rpm:50,rpmEntrada:50,torque:2,capacidade:2,escorrega:false,invalida:false,conectada:true,raio:.08,mensagem:'' };
 const observar = () => {};
 export function CenaPadaria({ estado, destacado, circuito }: { estado:Simulacao;destacado:string|null;circuito:Circuito }) {
   const movimento=useMovimento(TRANSMISSAO,12,estado.motor,observar), reduzido=useReducedMotion();

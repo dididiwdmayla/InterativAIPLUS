@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "test": "vitest run",
-    "test:essencial": "vitest run testes/eletrica.test.ts testes/campanha.test.ts",
-    "test:e2e": "node testes/mobile.mjs",
+    "test:essencial": "vitest run testes/oficina.test.ts",
+    "test:e2e": "node testes/oficina.mjs",
     "check:regras": "node testes/regras.mjs"
   },
   "dependencies": {

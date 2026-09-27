@@ -14,7 +14,7 @@ try {
   async function introducao() { await p.locator('.guia-fase').waitFor(); while (await botao('Continuar').isVisible()) await tocar('Continuar'); await tocar('Vamos começar'); }
   const proximo = () => tocar('Próximo objetivo');
   const partir = async () => { await tocar('Segurar S1'); await tocar('Soltar S1'); };
-  await p.goto(url); await introducao();
+  await p.goto(`${url}/comandos`); await introducao();
   await p.locator('[data-componente="q1"]').tap(); await proximo();
   await tocar('Sonda'); await tocar('Sondar A1'); await proximo();
   await partir(); await proximo();

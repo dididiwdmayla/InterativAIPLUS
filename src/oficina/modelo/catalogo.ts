@@ -31,3 +31,5 @@ export function adicionar(projeto: Projeto, tipo: TipoPeca): Projeto {
   const ponto = vagas.find(v => !projeto.pecas.some(p => Math.hypot(p.x - v.x, p.y - v.y) < 65)) ?? vagas[0];
   return { ...projeto, pecas: [...projeto.pecas, peca(tipo, `${prefixo}${n}`, ponto.x, ponto.y)] };
 }
+
+export function nomePorta(projeto: Projeto, id: string): string { const [peca,porta]=id.split(':'); return `${projeto.pecas.find(p=>p.id===peca)?.tag??peca.toUpperCase()}.${porta}`; }

@@ -250,3 +250,6 @@
 .of-maquina svg,.of-arte {
  --of-papel:#fffdf7; --of-ink:#243432; --of-muted:#52615b; --of-falha:#b4372e; --of-sucesso:#24745c; --of-acento:#f2bf37; --of-grid:#c6cabc; --of-energia:#cc611c;
 }
+
+:root { --of-veu:#243432aa; }
+.oficina { --cor-mascote-moldura:var(--of-acento); --cor-mascote-moldura-sombra:var(--of-metal-escuro); --cor-mascote-base:var(--of-azul); --cor-mascote-tela:var(--of-claro); --cor-mascote-rosto:var(--of-metal-escuro); --cor-mascote-bochecha:var(--of-caixa); }
