@@ -253,3 +253,5 @@
 
 :root { --of-veu:#243432aa; }
 .oficina { --cor-mascote-moldura:var(--of-acento); --cor-mascote-moldura-sombra:var(--of-metal-escuro); --cor-mascote-base:var(--of-azul); --cor-mascote-tela:var(--of-claro); --cor-mascote-rosto:var(--of-metal-escuro); --cor-mascote-bochecha:var(--of-caixa); }
+
+:root { --of-tinta-acento:#243432; }
