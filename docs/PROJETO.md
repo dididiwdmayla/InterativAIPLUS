@@ -58,3 +58,23 @@ Validação da segunda rodada concentrada no núcleo/campanha e em um percurso r
 ## Fora de escopo
 
 Fases além das três missões de Comandos, Ilha Mecânica, editor textual bidirecional, cálculo analógico de corrente/queda de tensão, dimensionamento, certificação de segurança funcional, login, banco e publicação automática em produção.
+
+## Rodada 3: oficina própria
+
+Nova autorização: mudança ampla de identidade, mecânica jogável, manutenção e criação autoral nos dois domínios. A entrada passa a ser a escolha Elétrica/Mecânica. A experiência usa ordens de serviço, máquinas, instrumentos e prancheta de montagem. As três missões anteriores permanecem em /comandos, com seu progresso preservado.
+
+Modelo de oficina independente em src/oficina/modelo: peças, portas, ligações, cenários e medições serializáveis. Elétrica de 24 Vcc com conectividade e análise nodal de cargas resistivas equivalentes; não modela potência de soldagem nem propõe reparo em soldadora real. A falha intermitente só aparece quando a articulação se move. A soldadora exige remover a obstrução virtual antes de rearmar.
+
+Mecânica: grafo cinemático com eixo, engrenamento externo, correia aberta/cruzada. Relações vêm de dentes/diâmetros, ciclos contraditórios são bloqueados. Torque disponível e capacidade didática da correia limitam a aceleração; integração em passos de até 1/120 s inclui inércia da carga, atrito, desaceleração e aderência das caixas à esteira. Dentes e rodas são símbolos, sem cálculo de perfil, distância entre eixos ou dimensionamento. Tensão da correia é uma escala didática, não força prescrita.
+
+Bancada autoral inicia vazia: inserir/remover/mover peças, nomear, ligar, desfazer, operar e medir. Um motor, um rolete e uma fonte por projeto; até 16 peças e 40 ligações. Exportação/importação validada de projeto; rascunhos separados dos serviços. Persistência em interativai:oficina:v1; cada entrada sempre oferece as duas áreas.
+
+Referências de modelo: KHK, Direction of Rotation of Gears e Calculation of Gear Dimensions; OpenStax, Newton's Second Law for Rotation; Gates, Preventive Maintenance Manual. A física é didática; não é um cálculo de seleção de componentes reais.
+
+Entrega da rodada 3: cinco serviços independentes, duas bancadas autorais e as três missões de Comandos preservadas. A identidade usa materiais de oficina, dois temas, instrumentos e controles de teste, com mascote integrado à paleta. Diagnóstico é local e deriva do circuito/transmissão, sem custo de API. Medições reais de tensão/rotação ficam no caderno; a previsão ideal da transmissão aparece separada. No modo autoral, IDs internos não mudam ao renomear peças.
+
+Referências consultadas para o novo núcleo:
+- https://khkgears.net/new/gear_knowledge/gear-nomenclature/direction-of-rotation-of-gears.html
+- https://khkgears.net/pdf/internal-tech.pdf
+- https://www.gates.com/content/dam/documents-library/operating-manuals/preventive-maintenance-manual-en.pdf
+- https://openstax.org/books/university-physics-volume-1/pages/10-7-newtons-second-law-for-rotation

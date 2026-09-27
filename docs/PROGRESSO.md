@@ -43,3 +43,22 @@ Rodada 2, etapa 2: rota Monte/Investigue/Recupere, defeito NA/NF e recuperação
 Rodada 2, etapa 3: percurso de toque no Chromium em 390 px concluiu as três missões, incluindo cancelamento, conexão pela bandeja e pelo desenho, retomada após recarregar, inserção de S3, correção de S2, rearme de F1 sem partida e conquista final. Regressão em 1440 px passou com remoção por teclado e conexão por arraste, sem erros de console. Capturas móvel/desktop inspecionadas. Os dois problemas encontrados no percurso foram corrigidos: fio horizontal ganhou um alvo circular + para inserção, e a bandeja reserva espaço para cancelar sem deslocar os terminais durante o arraste. A bandeja foi compactada por peça.
 
 Revisão da persistência: preserva o disparo de Q0 e o registro de curto; cenários que já contêm S3 não duplicam a peça ao restaurar. A orientação reconhece quando S3 já foi inserida. Verificação final limitada a build, lint, auditoria de regras e 14 testes do núcleo/campanha; o percurso de navegador substitui os três roteiros anteriores. Publicação em branch própria e PR, sem alterar produção nem o repositório de programação. Limite: toque em Chromium emulado, sem validação em aparelho físico ou Safari.
+
+## Rodada 3 — oficina viva
+
+- [x] Modelos de circuito autoral e transmissão; cinco ordens de serviço; importação validada.
+- [x] Entrada Elétrica/Mecânica, identidade própria, bancadas e criação livre.
+- [x] Movimento integrado da esteira, inspeção orientada e persistência.
+- [x] Verificação essencial; entrega preparada em feat/oficina-viva.
+
+Etapa 1: gramática de peças/portas, análise nodal, falha condicionada ao movimento, relações de transmissão e dinâmica com inércia e atrito. Cenários E.01/E.02/M.01/M.02/M.03. Sete testes focados no comportamento físico e nos dados importados, sem ampliar a matriz de testes da entrega anterior. Build e lint antes do commit.
+
+Etapa 2: nova entrada com duas bancadas, ordens de serviço, prancheta autoral e materiais de oficina. Catálogo, inserção, posicionamento por toque/setas, ligações por duas pontas, propriedades, remoção, desfazer, sonda/tacômetro, caderno e exportação/importação. Cinco serviços exigem reproduzir e comprovar o reparo. Controles ficam ao alcance; medições e rascunhos persistem por bancada. Soldadora exige desobstrução antes do rearme; luminária exige repetir o movimento. A esteira antiga também passou a usar deslocamento integrado e inércia. Sete percursos por toque (cinco serviços e dois projetos livres) passaram sem erro de console; capturas 390/1440 inspecionadas. Build e lint antes do commit.
+
+Etapa 3: caderno com leitura imediata na própria ferramenta, tacômetro lendo rotação dinâmica (incluindo patinagem), menor capacidade de correia calculada no caminho da carga, repouso sem redesenho contínuo e fios roteados fora dos símbolos. Identificações autorais refletem peças e ligações. Máscara visual do mascote e confirmações usam os materiais da oficina.
+
+Verificação final desta rodada: build, lint, sete testes físicos/de importação e auditoria de regras passaram. Um roteiro de navegador em 390 px percorreu os cinco serviços e construiu os dois projetos autorais, verificando exportação e retomada. Checagem focada adicional verificou importação válida/inválida, operação do arquivo, posição pelo teclado, exclusão e desfazer. Sem erros de console. Capturas da entrada e das bancadas em 390/1440, Doce/Fliperama, inspecionadas: escolhas compactas visíveis no celular, montagem legível, controles acessíveis, instalação com paleta fixa. Não repetida a bateria das missões antigas.
+
+Limites: Chromium com toque emulado; sem aparelho físico ou Safari. As forças e a tensão de correia são didáticas; não há dimensionamento mecânico nem potência real de soldagem. A nova oficina usa diagnóstico local; o tutor Gemini continua nas missões em /comandos. Projetos salvos separados, entrada sempre com escolha de área. Publicação em PR, sem merge ou implantação em produção.
+
+Ajuste final: texto dos controles e cartões sobre amarelo/verde usa a tinta escura fixa da oficina, com contraste reforçado nos dois temas. Build e lint verificados antes do commit.

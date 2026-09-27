@@ -1,0 +1,15 @@
+export type Area = 'eletrica' | 'mecanica';
+export type TipoPeca = 'fonte' | 'disjuntor' | 'interruptor' | 'termico' | 'bobina' | 'lampada' | 'motor-eletrico' | 'motor' | 'engrenagem' | 'polia' | 'rolete';
+export type TipoLigacao = 'fio' | 'eixo' | 'engrenamento' | 'correia' | 'cruzada';
+export type Peca = { id: string; tipo: TipoPeca; tag: string; x: number; y: number; valor: number; nf: boolean; avaria: boolean };
+export type Ligacao = { id: string; de: string; para: string; tipo: TipoLigacao; tensao: number; avaria: boolean };
+export type Projeto = { versao: 1; area: Area; nome: string; pecas: Peca[]; ligacoes: Ligacao[]; carga: number; obstrucao: boolean };
+export type Entradas = { ligada: boolean; atuadas: string[]; perturbacao: boolean; disparado: boolean };
+export type Eletrica = { curto: boolean; sobrecarga: boolean; potenciais: Record<string, number | null>; cargas: Record<string, number>; corrente: number; mensagem: string };
+export type Transmissao = { razoes: Record<string, number>; eixosEntrada: string[]; razao: number; rpm: number; rpmEntrada: number; torque: number; capacidade: number; escorrega: boolean; invalida: boolean; conectada: boolean; raio: number; mensagem: string };
+export type Movimento = { omega: number; angulo: number; omegaEntrada: number; anguloEntrada: number; distancia: number; caixas: { x: number; v: number }[]; entregas: number };
+export type Medicao = { ponto: string; valor: string };
+export type Ordem = { id: string; area: Area; numero: string; titulo: string; equipamento: string; relato: string; conceito: string; passos: [string, string, string]; dicas: [string, string, string]; projeto: Projeto };
+export type Sessao = { projeto: Projeto; observou: boolean; alterou: boolean; concluida: boolean; ajuda: number; medicoes: Medicao[] };
+export type ArquivoOficina = { versao: 1; sessoes: Record<string, Sessao>; tema: 'doce' | 'fliperama'; som: boolean };
+export const ENTRADAS: Entradas = { ligada: false, atuadas: [], perturbacao: false, disparado: false };

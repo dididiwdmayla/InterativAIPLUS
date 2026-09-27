@@ -1,0 +1,12 @@
+import Link from 'next/link';
+import type { Area, ArquivoOficina } from '../modelo/tipos';
+import { ORDENS } from '../modelo/ordens';
+import { IconeOficina } from './IconeOficina';
+import { ArteOficina } from './ArteOficina';
+export function CentralOficina({area,arquivo,abrir}:{area:Area;arquivo:ArquivoOficina;abrir:(id:string)=>void}) { const ordens=ORDENS.filter(o=>o.area===area);return <main className={`of-central of-${area}`}>
+ <section className="of-central-hero"><div><p className="of-eyebrow">OFICINA / {area==='eletrica'?'ENERGIA E COMANDO':'FORÇA E MOVIMENTO'}</p><h1>{area==='eletrica'?'Toda falha deixa uma pista.':'Todo movimento tem uma causa.'}</h1><p>{area==='eletrica'?'Do sintoma ao circuito. Faça medições, teste uma hipótese e veja a máquina voltar.':'Do eixo à esteira. Mude uma peça e descubra o efeito na velocidade, no sentido e na força.'}</p><span className="of-selo-contagem">{ordens.filter(o=>arquivo.sessoes[o.id]?.concluida).length} de {ordens.length} serviços resolvidos</span></div><ArteOficina area={area}/></section>
+ <div className="of-titulo-secao"><h2>Ordens de serviço</h2><span>OBSERVE → INVESTIGUE → COMPROVE</span></div>
+ <div className="of-ordens">{ordens.map(o=><button key={o.id} onClick={()=>abrir(o.id)} className="of-ordem"><span className="of-ordem-topo"><b>{o.numero}</b><span className={arquivo.sessoes[o.id]?.concluida?'of-feito':''}>{arquivo.sessoes[o.id]?.concluida?'SERVIÇO RESOLVIDO':arquivo.sessoes[o.id]?'EM ANDAMENTO':'AGUARDANDO VOCÊ'}</span></span><h3>{o.titulo}</h3><p>{o.relato}</p><span className="of-ordem-base">{o.conceito}<IconeOficina nome="seta"/></span></button>)}</div>
+ <button className="of-criacao" onClick={()=>abrir(`livre-${area}`)}><div className="of-criacao-icone"><IconeOficina nome="mais" tamanho={38}/></div><span><small>ESPAÇO AUTORAL</small><strong>A próxima ideia é sua.</strong><span>{arquivo.sessoes[`livre-${area}`]?'Retome sua montagem ou abra uma prancheta vazia.':'Comece com uma prancheta vazia. Escolha cada peça, cada ligação, cada resultado.'}</span></span><b>{arquivo.sessoes[`livre-${area}`]?'Abrir meu projeto':'Criar do zero'}<IconeOficina nome="seta"/></b></button>
+ {area==='eletrica'&&<Link href="/comandos" className="of-link-base">Primeira vez com comandos? Faça as três missões de contatora e selo<IconeOficina nome="seta"/></Link>}
+ <p className="of-nota">Máquinas fictícias e ensaios virtuais. A curiosidade é real; a bancada é sua para experimentar.</p></main>; }
