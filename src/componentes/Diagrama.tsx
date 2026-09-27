@@ -55,11 +55,14 @@ export function Diagrama({ editor, enviar, modo, origem, setOrigem, terminal, ho
       const a = terminais.find(t => t.id === w.de), b = terminais.find(t => t.id === w.para);
       if (!a || !b) return null;
       const via = w.via ?? (a.x !== b.x && a.y !== b.y ? [{ x: a.x, y: b.y }] : []);
+      const pontos = [a,...via,b];
+      const trecho = pontos.slice(1).map((fim,i)=>({inicio:pontos[i],fim})).sort((u,v)=>Math.hypot(v.fim.x-v.inicio.x,v.fim.y-v.inicio.y)-Math.hypot(u.fim.x-u.inicio.x,u.fim.y-u.inicio.y))[0];
+      const meio = {x:(trecho.inicio.x+trecho.fim.x)/2,y:(trecho.inicio.y+trecho.fim.y)/2};
       const d = `M${a.x} ${a.y} ${[...via, b].map(p => `L${p.x} ${p.y}`).join(' ')}`;
       return <g key={w.id} role="button" tabIndex={0} aria-label={`Fio ${a.tag}.${a.nome} para ${b.tag}.${b.nome}`} data-fio={w.id} className={destaque === w.id ? 'alvo-ajuda' : ''} onClick={() => escolherFio(w.id)} onKeyDown={e => {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); escolherFio(w.id); }
         if (e.key === 'Delete' && editavel) enviar({ tipo: 'editar', edicao: { tipo: 'desconectar', id: w.id } });
-      }}><path d={d} className="alvo-fio"/><path d={d} className={`fio ${editor.simulacao.energizados.includes(w.id) ? 'energizado' : ''} ${fioSelecionado === w.id ? 'selecionado' : ''}`}/></g>;
+      }}><path d={d} className="alvo-fio"/><path d={d} className={`fio ${editor.simulacao.energizados.includes(w.id) ? 'energizado' : ''} ${fioSelecionado === w.id ? 'selecionado' : ''}`}/>{modo==='inserir'&&<g className="ponto-insercao"><circle cx={meio.x} cy={meio.y} r="18"/><path d={`M${meio.x-7} ${meio.y}h14 M${meio.x} ${meio.y-7}v14`}/></g>}</g>;
     })}
     {circuito.componentes.map(peca => <g key={peca.id} className={destaque === peca.id ? 'alvo-ajuda' : ''}><PecaDiagrama peca={peca} s={editor.simulacao} selecionada={editor.selecionado === peca.id} selecionar={() => enviar({ tipo: 'selecionar', id: peca.id })} hover={hover} editavel={editavel} alternar={() => enviar({ tipo: 'editar', edicao: { tipo: 'contato', id: peca.id, contato: peca.contato === 'NA' ? 'NF' : 'NA' } })}/></g>)}
     <g className={destaque === 'selo' ? 'alvo-ajuda' : ''}><rect x={aux.x - 18} y={aux.y - 22} width="105" height="52" rx="10" className="auxiliar-fundo"/><text x={aux.x + 35} y={aux.y - 30} textAnchor="middle" className="nome-peca">{contatora.tag} · auxiliar {contatora.contato}</text><path d={`M${aux.x} ${aux.y}h15 m40 0h15 M${aux.x + 15} ${aux.y}L${aux.x + 55} ${aux.y - (fechado ? 0 : 15)}`} className="simbolo"/></g>

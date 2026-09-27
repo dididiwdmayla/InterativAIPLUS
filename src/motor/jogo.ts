@@ -73,5 +73,6 @@ export function falaAtual(fase: Fase, s: EstadoJogo): Fala {
   if (s.degrau === 1) return { texto: o.ajudas.pergunta, expressao: 'curioso' };
   if (s.degrau === 2) return { texto: o.ajudas.dica, expressao: 'pensativo' };
   if (s.degrau >= 3) return { texto: o.ajudas.linha.fala, expressao: 'apontando' };
+  if (fase.cenario === 'sem-selo' && o.validar === 'inserir-parada' && s.editor.circuito.componentes.some(c => c.id === 's3')) return { texto: 'S3 já está no diagrama. Ela precisa ficar entre S2 e S1. Ligue a esteira e pressione S3 para testar a parada.', expressao: 'apontando' };
   return { texto: o.enunciado, expressao: 'curioso' };
 }

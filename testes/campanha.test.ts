@@ -28,6 +28,8 @@ it('migra o progresso antigo e guarda a retomada de cada missão', () => {
   s = desserializar(serializar(s)); s = agir(s, { tipo: 'abrir-fase', id: FASES[1].id });
   expect(s.fala).toBe(1); expect(s.tema).toBe('fliperama'); expect(s.estrelasPorFase[FASES[0].id]).toBe(3);
   expect(s.editor.circuito.componentes.find(c => c.id === 's2')?.contato).toBe('NA');
+  s = desserializar(serializar(s));
+  expect(s.editor.circuito.componentes.filter(c => c.id === 's3')).toHaveLength(1);
 });
 it('recarregar não rearma F1 nem mantém um dedo virtual pressionado', () => {
   let s = concluir(jogoInicial()); s = concluir(agir(s, { tipo: 'abrir-fase', id: FASES[1].id }));

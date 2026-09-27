@@ -9,9 +9,10 @@ export const CHAVE_PROGRESSO='interativai:progresso:v1';
 function objeto(v:unknown):v is Record<string,unknown>{return typeof v==='object'&&v!==null&&!Array.isArray(v);}
 function inteiro(v:unknown,min:number,max:number,padrao:number){return typeof v==='number'&&Number.isInteger(v)&&v>=min&&v<=max?v:padrao;}
 export function normalizarCircuito(v:unknown,base=circuitoInicial()):Circuito{
+  const reserva=structuredClone(base);
   if(!objeto(v)||v.versao!==1||!Array.isArray(v.componentes)||!Array.isArray(v.conexoes)||v.conexoes.length>50)return base;
   const lista=v.componentes.filter(objeto);
-  if(lista.some(c=>c.id==='s3'))base.componentes.push(structuredClone(S3));
+  if(lista.some(c=>c.id==='s3')&&!base.componentes.some(c=>c.id==='s3'))base.componentes.push(structuredClone(S3));
   const tags=new Set<string>();
   base.componentes=base.componentes.map(c=>{
     const salvo=lista.find(p=>p.id===c.id);
@@ -23,7 +24,7 @@ export function normalizarCircuito(v:unknown,base=circuitoInicial()):Circuito{
   const terminais=new Set(base.componentes.flatMap(c=>c.terminais.map(t=>`${c.id}:${t.nome}`)));
   const ids=new Set<string>(),conexoes:Conexao[]=[];
   for(const w of v.conexoes){
-    if(!objeto(w)||typeof w.id!=='string'||!/^[a-zA-Z0-9_-]{1,40}$/.test(w.id)||ids.has(w.id)||typeof w.de!=='string'||typeof w.para!=='string'||!terminais.has(w.de)||!terminais.has(w.para)||w.de===w.para)return circuitoInicial();
+    if(!objeto(w)||typeof w.id!=='string'||!/^[a-zA-Z0-9_-]{1,40}$/.test(w.id)||ids.has(w.id)||typeof w.de!=='string'||typeof w.para!=='string'||!terminais.has(w.de)||!terminais.has(w.para)||w.de===w.para)return reserva;
     ids.add(w.id);
     const original=base.conexoes.find(f=>f.id===w.id&&f.de===w.de&&f.para===w.para);
     conexoes.push({id:w.id,de:w.de,para:w.para,...(original?.via?{via:original.via}:{})});
@@ -36,7 +37,7 @@ function lerPartida(p:Record<string,unknown>,fase:Fase):Partida{
   const circuito=normalizarCircuito(p.circuito,base.editor.circuito);
   const editor=criarEditor(circuito),entradas=objeto(p.entradas)?p.entradas:null;
   const e=entradas?{pressionadas:[],disjuntorLigado:entradas.disjuntorLigado!==false,termicoDisparado:entradas.termicoDisparado===true,emergenciaTravada:entradas.emergenciaTravada===true}:base.editor.simulacao.entradas;
-  editor.simulacao=simular(circuito,e);
+  editor.simulacao=simular(circuito,e,{...editor.simulacao,bobina:false,disjuntorDisparado:p.disjuntorDisparado===true,curto:p.curto===true});
   if(typeof p.selecionado==='string'&&circuito.componentes.some(c=>c.id===p.selecionado))editor.selecionado=p.selecionado;
   const momento=['introducao','objetivo','feedback','conclusao'].includes(String(p.momento))?p.momento as Partida['momento']:'introducao';
   return{...base,editor,momento,objetivo:inteiro(p.objetivo,0,fase.objetivos.length-1,0),fala:inteiro(p.fala,0,(momento==='conclusao'?fase.conclusao:fase.introducao).length-1,0),degrau:inteiro(p.degrau,0,4,0) as Partida['degrau'],estrelas:inteiro(p.estrelas,1,3,3),missao:p.missao===true};
@@ -55,7 +56,7 @@ export function desserializar(texto:string|null):EstadoJogo{
     return{...padrao,...lerPartida(p,fase),faseId:fase.id,partidas,tema:p.tema==='fliperama'?'fliperama':p.tema==='segredo'&&segredo?'segredo':'doce',som:p.som!==false,segredo,fasesConcluidas,estrelasPorFase};
   }catch{return padrao;}
 }
-function dados(s:Partida){return{circuito:s.editor.circuito,entradas:{...s.editor.simulacao.entradas,pressionadas:[]},selecionado:s.editor.selecionado,momento:s.momento,objetivo:s.objetivo,fala:s.fala,degrau:s.degrau,estrelas:s.estrelas,missao:s.missao};}
+function dados(s:Partida){return{circuito:s.editor.circuito,disjuntorDisparado:s.editor.simulacao.disjuntorDisparado,curto:s.editor.simulacao.curto,entradas:{...s.editor.simulacao.entradas,pressionadas:[]},selecionado:s.editor.selecionado,momento:s.momento,objetivo:s.objetivo,fala:s.fala,degrau:s.degrau,estrelas:s.estrelas,missao:s.missao};}
 export function serializar(s:EstadoJogo){
   const partidas=Object.fromEntries(Object.entries({...s.partidas,[s.faseId]:guardarPartida(s)}).map(([id,p])=>[id,dados(p)]));
   return JSON.stringify({versao:2,...dados(s),faseId:s.faseId,partidas,tema:s.tema,som:s.som,segredo:s.segredo,fasesConcluidas:s.fasesConcluidas,estrelasPorFase:s.estrelasPorFase});

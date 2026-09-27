@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
-const arquivos = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { encoding: 'utf8' }).trim().split('\n');
+import { existsSync, readFileSync } from 'node:fs';
+const arquivos = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { encoding: 'utf8' }).trim().split('\n').filter(existsSync);
 const problemas = [];
 for (const arquivo of arquivos) {
   const texto = readFileSync(arquivo, 'utf8');

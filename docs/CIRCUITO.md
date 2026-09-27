@@ -35,3 +35,9 @@ Operações de edição: conectar, desconectar, mudarTag, mudarContato e inserir
 Sonda: referência A2 visível; 24 V, 0 V ou indeterminado. Valor é diferença entre nós, não uma propriedade absoluta do terminal. Terra de proteção não substitui retorno 0 V nem neutro.
 
 U1 identifica a fonte de 24 Vcc. Q0 aberto mantém tensão no lado de entrada; a carga deixa de receber alimentação. Num curto diretamente na fonte, a simulação bloqueia sua saída, além de registrar a proteção disparada. Isso é um limite explícito do modelo didático, sem cálculo de impedância da fonte. Desfazer uma montagem não rearma proteções.
+
+## Projeção e cenários
+
+`layout.ts` projeta o mesmo circuito em paisagem ou retrato sem alterar IDs, conectividade ou notação. A posição dos terminais nunca define uma ligação; somente os pares `de`/`para` do modelo fazem isso. A bandeja de bornes, o toque no SVG e o arraste de mouse disparam a mesma operação de conexão. Selecionar a origem novamente cancela a edição.
+
+`cenarios.ts` prepara as três montagens: falta de selo, parada S2 configurada como NA e sobrecarga com F1 disparado. As duas últimas já incluem selo e S3. Progresso salvo restaura cada montagem sem duplicar componentes. Recarregar mantém disparos e retenção de S3, mas solta as botoeiras momentâneas.
