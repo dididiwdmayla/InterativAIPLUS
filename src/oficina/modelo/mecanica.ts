@@ -27,16 +27,19 @@ export function calcularTransmissao(p: Projeto): Transmissao {
   const resistente = (.7 + p.carga * .045) * raio;
   const escorrega = limite < Math.min(torque, resistente * 3);
   const conectada = !!motor && !!rolete && !!razao && !invalida;
-  return { razoes, razao, rpm: conectada ? motor.valor * razao : 0, torque, capacidade: limite, escorrega, invalida, conectada, raio,
+  return { razoes, razao, rpm: conectada ? motor.valor * razao : 0, rpmEntrada: motor?.valor ?? 0, torque, capacidade: limite, escorrega, invalida, conectada, raio,
     mensagem: invalida ? 'As ligações exigem rotações incompatíveis. Revise o ciclo da transmissão.' : !conectada ? 'Ligue o motor ao rolete por eixos, engrenagens ou polias.' : escorrega ? 'A correia não consegue transmitir o esforço. Observe o motor girar e a saída perder velocidade.' : razao < 0 ? 'A saída gira ao contrário da entrada. Conte os elementos que invertem o sentido.' : 'Movimento transmitido. A carga e a inércia determinam como a esteira ganha velocidade.' };
 }
-export function movimentoInicial(): Movimento { return { omega: 0, angulo: 0, distancia: 0, caixas: [{ x: .1, v: 0 }, { x: 1.1, v: 0 }, { x: 2.1, v: 0 }], entregas: 0 }; }
+export function movimentoInicial(): Movimento { return { omega: 0, angulo: 0, omegaEntrada: 0, anguloEntrada: 0, distancia: 0, caixas: [{ x: .1, v: 0 }, { x: 1.1, v: 0 }, { x: 2.1, v: 0 }], entregas: 0 }; }
 export function integrar(m: Movimento, t: Transmissao, carga: number, ligada: boolean, segundos: number): Movimento {
-  let omega = m.omega, angulo = m.angulo, distancia = m.distancia, entregas = m.entregas;
+  let omega = m.omega, angulo = m.angulo, omegaEntrada = m.omegaEntrada, anguloEntrada = m.anguloEntrada, distancia = m.distancia, entregas = m.entregas;
   const caixas = m.caixas.map(c => ({ ...c }));
   let resto = Math.min(.1, Math.max(0, segundos));
   while (resto > .000001) {
     const dt = Math.min(resto, 1 / 120); resto -= dt;
+    const alvoEntrada = ligada ? t.rpmEntrada * Math.PI / 30 : 0;
+    omegaEntrada += Math.sign(alvoEntrada - omegaEntrada) * Math.min(Math.abs(alvoEntrada - omegaEntrada), (ligada ? 18 : 7) * dt);
+    anguloEntrada += omegaEntrada * dt;
     const livre = Math.abs(t.rpm) * Math.PI / 30, sinal = Math.sign(t.rpm);
     const acionamento = ligada && t.conectada ? sinal * Math.min(t.capacidade, t.torque * Math.max(0, 1 - omega * sinal / Math.max(.01, livre))) : 0;
     const atrito = (.7 + carga * .045) * t.raio, inercia = .035 + carga * t.raio * t.raio;
@@ -51,5 +54,5 @@ export function integrar(m: Movimento, t: Transmissao, carga: number, ligada: bo
       if (c.x > 3.2) { c.x -= 3.3; entregas++; } else if (c.x < -.2) { c.x += 3.3; entregas++; }
     }
   }
-  return { omega, angulo, distancia, caixas, entregas };
+  return { omega, angulo, omegaEntrada, anguloEntrada, distancia, caixas, entregas };
 }

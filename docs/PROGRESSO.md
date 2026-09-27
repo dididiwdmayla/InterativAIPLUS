@@ -47,8 +47,10 @@ Revisão da persistência: preserva o disparo de Q0 e o registro de curto; cená
 ## Rodada 3 — oficina viva
 
 - [x] Modelos de circuito autoral e transmissão; cinco ordens de serviço; importação validada.
-- [ ] Entrada Elétrica/Mecânica, identidade própria, bancadas e criação livre.
-- [ ] Movimento integrado da esteira, inspeção orientada e persistência.
+- [x] Entrada Elétrica/Mecânica, identidade própria, bancadas e criação livre.
+- [x] Movimento integrado da esteira, inspeção orientada e persistência.
 - [ ] Verificação essencial e publicação em feat/oficina-viva.
 
 Etapa 1: gramática de peças/portas, análise nodal, falha condicionada ao movimento, relações de transmissão e dinâmica com inércia e atrito. Cenários E.01/E.02/M.01/M.02/M.03. Sete testes focados no comportamento físico e nos dados importados, sem ampliar a matriz de testes da entrega anterior. Build e lint antes do commit.
+
+Etapa 2: nova entrada com duas bancadas, ordens de serviço, prancheta autoral e materiais de oficina. Catálogo, inserção, posicionamento por toque/setas, ligações por duas pontas, propriedades, remoção, desfazer, sonda/tacômetro, caderno e exportação/importação. Cinco serviços exigem reproduzir e comprovar o reparo. Controles ficam ao alcance; medições e rascunhos persistem por bancada. Soldadora exige desobstrução antes do rearme; luminária exige repetir o movimento. A esteira antiga também passou a usar deslocamento integrado e inércia. Sete percursos por toque (cinco serviços e dois projetos livres) passaram sem erro de console; capturas 390/1440 inspecionadas. Build e lint antes do commit.

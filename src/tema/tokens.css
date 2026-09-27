@@ -237,3 +237,16 @@
   --inst-luz: #ffd764;
   --inst-sombra: #422d3b20;
 }
+
+/* Oficina: identidade própria, materiais e instrumentos. */
+:root,[data-theme="doce"] {
+ --of-fundo:#efece3; --of-papel:#fffdf7; --of-ink:#243432; --of-muted:#52615b; --of-linha:#c9cfc3; --of-suave:#e4e8dd; --of-acento:#f2bf37; --of-acento-mec:#d1e47a; --of-acento-eletrica:#f2bf37;
+ --of-azul:#477b8a; --of-energia:#cc611c; --of-sucesso:#24745c; --of-falha:#b4372e; --of-sombra:#24343218; --of-grid:#c6cabc;
+ --of-metal:#adbdba; --of-metal-escuro:#526963; --of-chao:#e1e3d6; --of-caixa:#cfa56b; --of-caixa-fita:#ebd7a6; --of-correia:#3f493f; --of-poeira:#9e805a; --of-luz:#f3cb5470; --of-claro:#fffdf7;
+}
+[data-theme="fliperama"] {
+ --of-fundo:#172527; --of-papel:#223436; --of-ink:#edf2de; --of-muted:#bccabe; --of-linha:#4d6863; --of-suave:#2d4442; --of-acento:#f2cf59; --of-acento-mec:#d1f18d; --of-acento-eletrica:#f2cf59; --of-sucesso:#8fe0b3; --of-falha:#ffaaa0; --of-energia:#ffb76b; --of-sombra:#00000030; --of-grid:#4a605b;
+}
+.of-maquina svg,.of-arte {
+ --of-papel:#fffdf7; --of-ink:#243432; --of-muted:#52615b; --of-falha:#b4372e; --of-sucesso:#24745c; --of-acento:#f2bf37; --of-grid:#c6cabc; --of-energia:#cc611c;
+}

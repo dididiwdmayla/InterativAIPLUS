@@ -25,7 +25,7 @@ export function lerProjeto(v: unknown): Projeto | null {
     if (CATALOGO[tipo].area !== p.area || (['fonte', 'motor', 'rolete'].includes(tipo) && p.pecas.some(a => a.tipo === tipo))) return null;
     if (typeof c.x !== 'number' || typeof c.y !== 'number' || !Number.isFinite(c.x) || !Number.isFinite(c.y) || typeof c.valor !== 'number' || !Number.isFinite(c.valor)) return null;
     const valor = tipo === 'fonte' ? 24 : ['lampada', 'bobina', 'motor-eletrico', 'disjuntor', 'interruptor', 'termico'].includes(tipo) ? CATALOGO[tipo].valor : Math.max(tipo === 'engrenagem' ? 10 : 20, Math.min(tipo === 'motor' ? 600 : 240, Math.round(c.valor)));
-    p.pecas.push({ id: c.id, tag: c.tag, tipo, x: Math.max(65, Math.min(555, c.x)), y: Math.max(55, Math.min(445, c.y)), valor, nf: c.nf === true, avaria: c.avaria === true });
+    p.pecas.push({ id: c.id, tag: c.tag, tipo, x: Math.max(65, Math.min(555, c.x)), y: Math.max(55, Math.min(395, c.y)), valor, nf: c.nf === true, avaria: c.avaria === true });
   }
   for (const l of v.ligacoes) {
     if (!objeto(l) || typeof l.id !== 'string' || !/^[a-z][a-z0-9_-]{0,19}$/.test(l.id) || p.ligacoes.some(a => a.id === l.id) || typeof l.de !== 'string' || typeof l.para !== 'string' || !['fio', 'eixo', 'engrenamento', 'correia', 'cruzada'].includes(String(l.tipo))) return null;
