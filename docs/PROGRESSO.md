@@ -33,7 +33,9 @@ Limites da entrega: chamada real ao Gemini depende de chave do servidor e não f
 ## Rodada 2 — jornada no celular
 
 - [x] Fios: toque em duas pontas, bornes ampliados, cancelamento explícito, arraste exclusivo do mouse; diagrama reorganizado para retrato sem rolagem lateral.
-- [ ] Campanha orientada de três missões com progresso independente.
+- [x] Campanha orientada de três missões com progresso independente.
 - [ ] Verificação essencial de simulação, migração e percurso por toque; publicação.
 
 A nova orientação do usuário prioriza interação móvel, mais fases e testes enxutos. Preservados os testes existentes do núcleo; a jornada de navegador será concentrada em um roteiro de risco real, sem varrer repetidamente todas as larguras.
+
+Rodada 2, etapa 2: rota Monte/Investigue/Recupere, defeito NA/NF e recuperação de F1 com doze objetivos ao todo. Guia fica acima da bancada, controle de teste móvel fixo com dedo virtual, mudança automática para a área do objetivo. Progresso migra de v1 para v2 na mesma chave, guarda partidas por fase e preserva proteções ao recarregar. Tutor usa o catálogo completo. Build, lint e núcleo/campanha verificados antes do commit.

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { FASE_1 } from '@/conteudo/fase1';
+import { obterFase } from '@/conteudo/campanha';
 import { notacao } from '@/eletrica/operacoes';
 import { ehExpressao } from '@/motor/expressao';
 import type { EstadoJogo } from '@/motor/jogo';
@@ -16,8 +16,9 @@ export function CampoTutor({ estado, falar, descobrir }: { estado: EstadoJogo; f
     if (texto.toLocaleLowerCase('pt-BR') === 'curioso') { setPergunta(''); descobrir(); return; }
     const controller = new AbortController(); requisicao.current = controller;
     const prazo = setTimeout(() => controller.abort('tempo'), 22000);
-    const objetivo = FASE_1.objetivos[estado.objetivo];
-    const entrada: EntradaTutor = { faseId: FASE_1.id, objetivoId: objetivo.id, enunciado: objetivo.enunciado,
+    const fase=obterFase(estado.faseId);
+    const objetivo = fase.objetivos[estado.objetivo];
+    const entrada: EntradaTutor = { faseId: fase.id, objetivoId: objetivo.id, enunciado: objetivo.enunciado,
       degrauAtual: estado.degrau, circuitoAtual: notacao(estado.editor.circuito), pergunta: texto, historico: historico.slice(-6) };
     setPergunta(''); setEsperando(true); falar({ texto: 'Deixa eu olhar o seu circuito...', expressao: 'pensativo' });
     let fala: Fala = SEM_SINAL;

@@ -3,6 +3,7 @@ import { adicionarSelo,editar } from '../eletrica/operacoes';
 import { circuitoInicial } from '../eletrica/inicial';
 import { criarEditor,reduzirEditor,type EstadoEditor } from '../eletrica/editor';
 import type { Circuito } from '../eletrica/tipos';
+import { criarCenario } from '../eletrica/cenarios';
 import type { RegraObjetivo } from './tipos';
 
 function soltouComMotor(e: EstadoEditor, ligado: boolean) {
@@ -34,6 +35,11 @@ export function paradaFunciona(c: Circuito) {
   return !atuar(c,s,{tipo:'rearmar-emergencia'}).motor;
 }
 export function validar(regra: RegraObjetivo,e: EstadoEditor): boolean {
+  if(regra==='partida-bloqueada')return e.eventos.some(v=>v.tipo==='pressionouBotoeira'&&v.alvo==='s1'&&v.pressionada&&!v.motor)&&e.eventos.some(v=>v.tipo==='pressionouBotoeira'&&v.alvo==='s1'&&!v.pressionada&&!v.motor);
+  if(regra==='corrigir-parada')return e.circuito.componentes.find(c=>c.id==='s2')?.contato==='NF'&&e.eventos.some(v=>v.tipo==='editouTerminal'&&v.alvo==='s2');
+  if(regra==='testar-desliga')return seloFunciona(e.circuito)&&soltouComMotor(e,true)&&!e.simulacao.motor&&e.eventos.some(v=>v.tipo==='pressionouBotoeira'&&v.alvo==='s2'&&v.pressionada&&v.motorAntes&&!v.motor);
+  if(regra==='sondar-termico')return e.eventos.some(v=>v.tipo==='sondou'&&v.alvo==='f1:95'&&v.valor===24);
+  if(regra==='rearmar-termico')return !e.simulacao.entradas.termicoDisparado&&!e.simulacao.motor&&e.eventos.some(v=>v.tipo==='operouProtecao'&&v.alvo==='f1');
   if(regra==='selecionar-contatora')return e.selecionado==='q1';
   if(regra==='sondar-bobina')return e.eventos.some(v=>v.tipo==='sondou'&&v.alvo==='q1:A1'&&v.valor!==null);
   if(regra==='observar-defeito')return soltouComMotor(e,false);
@@ -41,9 +47,22 @@ export function validar(regra: RegraObjetivo,e: EstadoEditor): boolean {
   return paradaFunciona(e.circuito)&&e.eventos.some(v=>v.tipo==='pressionouBotoeira'&&v.alvo==='s3'&&v.pressionada&&v.motorAntes&&!v.motor);
 }
 export function resolver(regra: RegraObjetivo,e: EstadoEditor): EstadoEditor {
+  if(regra==='corrigir-parada')return reduzirEditor(e,{tipo:'editar',edicao:{tipo:'contato',id:'s2',contato:'NF'}});
+  if(regra==='sondar-termico')return reduzirEditor(e,{tipo:'sondar',terminal:'f1:95'});
+  if(regra==='rearmar-termico'){
+    let novo=criarCenario('sobrecarga');
+    novo=reduzirEditor(novo,{tipo:'atuar',acao:{tipo:'termico'}});return novo;
+  }
+  if(regra==='partida-bloqueada'||regra==='testar-desliga'){
+    let novo=criarCenario('parada-invertida');
+    if(regra==='testar-desliga')novo=reduzirEditor(novo,{tipo:'editar',edicao:{tipo:'contato',id:'s2',contato:'NF'}});
+    novo=reduzirEditor(novo,{tipo:'atuar',acao:{tipo:'pressionar',id:'s1'}});
+    novo=reduzirEditor(novo,{tipo:'atuar',acao:{tipo:'soltar',id:'s1'}});
+    if(regra==='testar-desliga'){novo=reduzirEditor(novo,{tipo:'atuar',acao:{tipo:'pressionar',id:'s2'}});novo=reduzirEditor(novo,{tipo:'atuar',acao:{tipo:'soltar',id:'s2'}});}return novo;
+  }
   if(regra==='selecionar-contatora')return reduzirEditor(e,{tipo:'selecionar',id:'q1'});
   if(regra==='sondar-bobina')return reduzirEditor(e,{tipo:'sondar',terminal:'q1:A1'});
-  const circuito=regra==='observar-defeito'?circuitoInicial():regra==='montar-selo'?adicionarSelo(circuitoInicial()):editar(adicionarSelo(circuitoInicial()),{tipo:'inserir',conexaoId:'w4'});
+  const circuito=regra==='observar-defeito'?circuitoInicial():regra==='montar-selo'?(e.circuito.componentes.some(c=>c.id==='s3')?editar(adicionarSelo(circuitoInicial()),{tipo:'inserir',conexaoId:'w4'}):adicionarSelo(circuitoInicial())):editar(adicionarSelo(circuitoInicial()),{tipo:'inserir',conexaoId:'w4'});
   let novo=criarEditor(circuito);
   novo=reduzirEditor(novo,{tipo:'atuar',acao:{tipo:'pressionar',id:'s1'}});
   novo=reduzirEditor(novo,{tipo:'atuar',acao:{tipo:'soltar',id:'s1'}});
