@@ -29,3 +29,11 @@ Etapa 7: Web Audio após gesto, preferência de som persistida, clique/acerto/av
 Verificação final: build e lint verdes; 21 testes unitários; jornada completa em 1440 e 390 pixels com mouse/teclado, retomada e missão; tutor sem chave/resposta simulada/falha de rede; acabamento em 390/768/1024/1440. Segredo sem chamada de API, CodeMirror somente leitura, sincronização de tag, paleta fixa da padaria, criação de áudio após gesto, som salvo, curto/rearme e F1 verificados no Chromium. Capturas Doce/Fliperama revisadas. Nenhuma cor literal fora dos tokens, símbolo pictográfico ou tipo any explícito. SDK e nome da variável de chave ausentes dos chunks do cliente. Contraste dos pares principais de texto e botão acima de 4,5:1 nos três temas.
 
 Limites da entrega: chamada real ao Gemini depende de chave do servidor e não foi executada; testes de navegador feitos em Chromium. Outras ilhas/fases, edição textual e cálculos analógicos permanecem futuros. O site antigo não respondeu no ambiente; sua referência de código foi consultada. Nenhum arquivo foi modificado no repositório de programação. Produção não foi alterada.
+
+## Rodada 2 — jornada no celular
+
+- [x] Fios: toque em duas pontas, bornes ampliados, cancelamento explícito, arraste exclusivo do mouse; diagrama reorganizado para retrato sem rolagem lateral.
+- [ ] Campanha orientada de três missões com progresso independente.
+- [ ] Verificação essencial de simulação, migração e percurso por toque; publicação.
+
+A nova orientação do usuário prioriza interação móvel, mais fases e testes enxutos. Preservados os testes existentes do núcleo; a jornada de navegador será concentrada em um roteiro de risco real, sem varrer repetidamente todas as larguras.
