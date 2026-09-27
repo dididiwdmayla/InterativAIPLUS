@@ -1,0 +1,53 @@
+import assert from 'node:assert/strict';
+import { mkdir } from 'node:fs/promises';
+import { abrirNavegador } from './navegador.mjs';
+const { browser, url, fechar } = await abrirNavegador();
+await mkdir('test-results', { recursive: true });
+try {
+  const p = await browser.newPage({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'reduce' });
+  p.setDefaultTimeout(10000);
+  const erros = []; p.on('pageerror', e => erros.push(e.message)); p.on('console', m => { if (m.type() === 'error') erros.push(m.text()); });
+  const botao = nome => p.getByRole('button', { name: nome, exact: true });
+  const tocar = nome => botao(nome).tap();
+  const fios = () => p.evaluate(() => JSON.parse(localStorage.getItem('interativai:progresso:v1')).circuito.conexoes.length);
+  const esperarFios = n => p.waitForFunction(n => JSON.parse(localStorage.getItem('interativai:progresso:v1')).circuito.conexoes.length === n, n);
+  async function introducao() { await p.locator('.guia-fase').waitFor(); while (await botao('Continuar').isVisible()) await tocar('Continuar'); await tocar('Vamos começar'); }
+  const proximo = () => tocar('Próximo objetivo');
+  const partir = async () => { await tocar('Segurar S1'); await tocar('Soltar S1'); };
+  await p.goto(url); await introducao();
+  await p.locator('[data-componente="q1"]').tap(); await proximo();
+  await tocar('Sonda'); await tocar('Sondar A1'); await proximo();
+  await partir(); await proximo();
+  await tocar('Fio');
+  await tocar('Borne Q1.13'); await tocar('Borne Q1.13'); assert.equal(await fios(), 8);
+  await tocar('Borne Q1.13'); await tocar('Cancelar fio'); assert.equal(await fios(), 8);
+  await tocar('Borne Q1.13'); await tocar('Peça S1'); await tocar('Borne S1.1'); await esperarFios(9);
+  await p.reload(); await botao('Recomeçar fase').waitFor(); assert.match(await p.locator('.balao').innerText(), /paralelo/);
+  await tocar('Fio'); await p.locator('[data-terminal="q1:14"]').tap(); await p.locator('[data-terminal="s1:2"]').tap(); await esperarFios(10);
+  await partir(); await proximo();
+  await p.screenshot({path:'test-results/montagem-mobile.png',fullPage:true});
+  await tocar('S3 NF'); await p.locator('[data-fio="w4"]').tap(); await tocar('Parar S3'); await tocar('Ver conquista');
+  console.log('Missão 1: toque nos bornes e no SVG, cancelamento, retomada, selo e S3 passaram.');
+  await tocar('Próxima missão'); await introducao(); await partir(); await proximo();
+  await p.locator('[data-componente="s2"]').tap(); await tocar('Trocar para NF'); await proximo();
+  await partir(); await tocar('Parar S2'); await tocar('Ver conquista');
+  console.log('Missão 2: descoberta do bloqueio, correção NA/NF e teste de parada passaram.');
+  await tocar('Próxima missão'); await introducao();
+  await p.reload(); await botao('Recomeçar fase').waitFor(); assert.match(await p.locator('.testador-leitura').innerText(), /F1 está disparado/);
+  await p.locator('[data-componente="f1"]').tap(); await tocar('Sonda'); await tocar('Sondar 95'); await proximo();
+  await p.getByText('Proteções da bancada', { exact: true }).tap(); await tocar('Rearmar F1'); await proximo();
+  await partir(); await proximo(); await tocar('Parar S3'); await tocar('Ver conquista');
+  await p.waitForFunction(() => JSON.parse(localStorage.getItem('interativai:progresso:v1')).fasesConcluidas.length === 3);
+  assert.match(await p.locator('.conclusao').innerText(), /LEITOR DE PAINÉIS/);
+  assert.equal(await p.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+  await p.screenshot({ path: 'test-results/rota-mobile.png', fullPage: true });
+  console.log('Missão 3: F1 persiste disparado, rearme sem partida, nova partida e conclusão passaram.');
+  // Uma única regressão de mouse/teclado cobre a outra entrada da ferramenta de fios.
+  await p.setViewportSize({ width: 1440, height: 1000 });
+  await p.getByRole('button', { name: /Abrir missão 1:/ }).click();
+  await botao('Fio').click(); await p.locator('[data-fio="fio-1"]').press('Delete'); await esperarFios(10);
+  await p.locator('[data-terminal="q1:13"]').dragTo(p.locator('[data-terminal="s1:1"]')); await esperarFios(11);
+  assert.equal(await p.locator('.bandeja-bornes [aria-pressed="true"]').count(), 0);
+  await p.screenshot({ path: 'test-results/rota-desktop.png', fullPage: true });
+  assert.deepEqual(erros, []); console.log('Regressão de arraste/teclado passou; nenhum erro de console.');
+} finally { await fechar(); }

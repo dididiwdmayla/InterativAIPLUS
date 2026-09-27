@@ -1,4 +1,4 @@
-import { FASE_1 } from '../conteudo/fase1';
+import { FASES } from '../conteudo/campanha';
 import { ehExpressao } from '../motor/expressao';
 import type { Fala } from '../motor/tipos';
 export type Mensagem = { papel: 'aluno' | 'tutor'; texto: string };
@@ -9,8 +9,10 @@ export type EntradaTutor = {
 export const SEM_SINAL: Fala = { texto: 'Estou sem sinal agora. Tenta o botão Me ajuda!', expressao: 'preocupado' };
 const registro = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null;
 export function lerEntrada(v: unknown): EntradaTutor | null {
-  if (!registro(v) || v.faseId !== FASE_1.id) return null;
-  const objetivo = FASE_1.objetivos.find(o => o.id === v.objetivoId);
+  if (!registro(v)) return null;
+  const fase = FASES.find(f => f.id === v.faseId);
+  if (!fase) return null;
+  const objetivo = fase.objetivos.find(o => o.id === v.objetivoId);
   if (!objetivo || typeof v.pergunta !== 'string' || !v.pergunta.trim() || v.pergunta.length > 1000 ||
     typeof v.circuitoAtual !== 'string' || v.circuitoAtual.length > 10000 ||
     typeof v.degrauAtual !== 'number' || ![0, 1, 2, 3, 4].includes(v.degrauAtual) || !Array.isArray(v.historico)) return null;
@@ -19,7 +21,7 @@ export function lerEntrada(v: unknown): EntradaTutor | null {
     if (!registro(m) || (m.papel !== 'aluno' && m.papel !== 'tutor') || typeof m.texto !== 'string') return null;
     historico.push({ papel: m.papel, texto: m.texto.slice(0, 1000) });
   }
-  return { faseId: FASE_1.id, objetivoId: objetivo.id, enunciado: objetivo.enunciado,
+  return { faseId: fase.id, objetivoId: objetivo.id, enunciado: objetivo.enunciado,
     degrauAtual: v.degrauAtual as EntradaTutor['degrauAtual'], circuitoAtual: v.circuitoAtual,
     pergunta: v.pergunta.trim(), historico };
 }

@@ -2,7 +2,9 @@
 
 ## Contrato
 
-Jogo para iniciantes: Ilha Elétrica > Comandos > Fase 1, "O painel é seu". Na Padaria Pão Quentinho, a esteira só funciona enquanto S1 está pressionada. O jogador identifica Q1, mede A1, observa o defeito, conecta o selo e insere S3 NF em série. Aprender experimentando, feedback imediato, falas breves, nenhuma digitação obrigatória.
+Jogo para iniciantes: Ilha Elétrica > Comandos. A primeira entrega trouxe a fase "O painel é seu". Na Padaria Pão Quentinho, a esteira só funciona enquanto S1 está pressionada. O jogador identifica Q1, mede A1, observa o defeito, conecta o selo e insere S3 NF em série. Aprender experimentando, feedback imediato, falas breves, nenhuma digitação obrigatória.
+
+Na segunda rodada, o usuário ampliou o escopo para várias fases, montagem adequada ao celular, orientação mais presente e testes essenciais. A campanha agora tem três missões e doze objetivos: montar o selo, investigar uma parada configurada como NA e interpretar/recuperar um relé térmico virtual. As outras zonas permanecem futuras.
 
 Referência original lida integralmente: briefing de 15 seções anexado em 26/09/2026. Referência de código: `dididiwdmayla/interativAI`, commit `b3a5fbd083c8125baad740c2095180aa156db6e8`. O site público não respondeu neste ambiente; o código atual foi consultado diretamente. Temas e personagem conservam a identidade original. O novo repositório não importa rotas, currículo, histórico git nem persistência do jogo de programação.
 
@@ -21,7 +23,7 @@ O modelo serializável é a fonte única. SVG, bancada e notação textual deriv
 
 O motor pedagógico interpreta dados: Fala, Ajudas, Objetivo, Fase. Só um objetivo ativo; quatro degraus de ajuda. Solução exige confirmação e custa uma estrela, mínimo de uma. Um adaptador de domínio permite a futura mecânica sem implementá-la agora.
 
-Persistência: interativai:progresso:v1. Schema validado, try/catch, fallback. Guardar circuito, objetivo, estrelas, ajudas, falas, temas, som e missão. Recarregar não mantém botoeira pressionada. Não ler nem migrar dados do jogo de programação.
+Persistência: interativai:progresso:v1. A chave é mantida; o schema 2 migra o schema 1 deste aplicativo e guarda partidas por fase. Schema validado, try/catch, fallback. Guardar circuito, objetivo, estrelas, ajudas, falas, temas, som e missão. Recarregar libera botoeiras momentâneas e preserva proteções disparadas. Não ler nem migrar dados do jogo de programação.
 
 Tutor: POST /api/tutor; entrada faseId, objetivoId, enunciado, degrauAtual, circuitoAtual, pergunta, historico (últimas seis mensagens). Saída texto e expressao. Troca de htmlAtual por circuitoAtual aprovada. Resposta curta, sem solução completa; falha nunca interrompe a fase. GEMINI_API_KEY e GEMINI_MODEL só no servidor.
 
@@ -38,7 +40,13 @@ Tutor: POST /api/tutor; entrada faseId, objetivoId, enunciado, degrauAtual, circ
 
 Doce: pastéis, rosa e violeta; Fliperama: neon; Segredo desbloqueável. Bancada da padaria tem paleta fixa. No diagrama lógico de 24 Vcc, laranja/cinza indicam potencial; a legenda explicita esse estado, sem representar cor física de isolamento. Tokens de fase, neutro e terra ficam preparados para os próximos domínios. Símbolos e rótulos também comunicam, sem depender só de cor.
 
-Desktop: trilha/estrelas, diagrama e inspetor à esquerda, bancada à direita, mascote/ajuda/tutor abaixo. No móvel, Painel e Bancada alternáveis mantendo estado. Todos os gestos têm alternativa por teclado. Sem mapa completo nem segunda ilha nesta entrega.
+Desktop: rota/estrelas, guia acima da área de trabalho, diagrama e inspetor à esquerda, bancada à direita. No móvel, Painel e Bancada alternáveis mantendo estado; cada objetivo escolhe sua área inicial. O guia acompanha a rolagem e o controle de teste fica fixo no rodapé. O tutor conversacional é expansível para manter o foco na missão.
+
+A rota Monte/Investigue/Recupere desbloqueia uma missão por vez, permite retomar as anteriores e entrega o selo Leitor de painéis ao concluir as três. O modelo continua único; o SVG recebe uma projeção em retrato abaixo de 600 px. Fios usam dois toques em terminais ou uma bandeja de bornes ampliados por peça. Mouse continua aceitando arraste; toque não captura o ponteiro nem impede a rolagem. Os controles não mudam de altura durante a conexão. Inserção em fio tem alvo circular com sinal +. Todos os gestos têm alternativa por teclado.
+
+O dedo virtual do controle de teste representa manter S1 pressionada, com estado e ação Soltar explícitos. A botoeira continua momentânea no simulador. A troca de fase e o recarregamento liberam essa entrada.
+
+Validação da segunda rodada concentrada no núcleo/campanha e em um percurso real de toque com uma regressão de mouse/teclado. Os roteiros anteriores de navegador foram substituídos por esse percurso, sem repetir a varredura de temas, som e larguras já realizada na primeira entrega.
 
 ## Referências técnicas
 
@@ -49,4 +57,4 @@ Desktop: trilha/estrelas, diagrama e inspetor à esquerda, bancada à direita, m
 
 ## Fora de escopo
 
-Outras fases, Ilha Mecânica, editor textual bidirecional, cálculo analógico de corrente/queda de tensão, dimensionamento, certificação de segurança funcional, login, banco e publicação automática em produção.
+Fases além das três missões de Comandos, Ilha Mecânica, editor textual bidirecional, cálculo analógico de corrente/queda de tensão, dimensionamento, certificação de segurança funcional, login, banco e publicação automática em produção.
