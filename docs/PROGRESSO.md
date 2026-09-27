@@ -43,3 +43,12 @@ Rodada 2, etapa 2: rota Monte/Investigue/Recupere, defeito NA/NF e recuperação
 Rodada 2, etapa 3: percurso de toque no Chromium em 390 px concluiu as três missões, incluindo cancelamento, conexão pela bandeja e pelo desenho, retomada após recarregar, inserção de S3, correção de S2, rearme de F1 sem partida e conquista final. Regressão em 1440 px passou com remoção por teclado e conexão por arraste, sem erros de console. Capturas móvel/desktop inspecionadas. Os dois problemas encontrados no percurso foram corrigidos: fio horizontal ganhou um alvo circular + para inserção, e a bandeja reserva espaço para cancelar sem deslocar os terminais durante o arraste. A bandeja foi compactada por peça.
 
 Revisão da persistência: preserva o disparo de Q0 e o registro de curto; cenários que já contêm S3 não duplicam a peça ao restaurar. A orientação reconhece quando S3 já foi inserida. Verificação final limitada a build, lint, auditoria de regras e 14 testes do núcleo/campanha; o percurso de navegador substitui os três roteiros anteriores. Publicação em branch própria e PR, sem alterar produção nem o repositório de programação. Limite: toque em Chromium emulado, sem validação em aparelho físico ou Safari.
+
+## Rodada 3 — oficina viva
+
+- [x] Modelos de circuito autoral e transmissão; cinco ordens de serviço; importação validada.
+- [ ] Entrada Elétrica/Mecânica, identidade própria, bancadas e criação livre.
+- [ ] Movimento integrado da esteira, inspeção orientada e persistência.
+- [ ] Verificação essencial e publicação em feat/oficina-viva.
+
+Etapa 1: gramática de peças/portas, análise nodal, falha condicionada ao movimento, relações de transmissão e dinâmica com inércia e atrito. Cenários E.01/E.02/M.01/M.02/M.03. Sete testes focados no comportamento físico e nos dados importados, sem ampliar a matriz de testes da entrega anterior. Build e lint antes do commit.
